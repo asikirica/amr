@@ -1,0 +1,5 @@
+var searchData=
+[
+  ['nbufferlayers_5f_0',['nbufferlayers_',['../classFoam_1_1fvMeshTopoChangers_1_1multiFieldRefiner2D.html#af2c14a84191167bfa1659c3a6fee4361',1,'Foam::fvMeshTopoChangers::multiFieldRefiner2D::nBufferLayers_'],['../classFoam_1_1fvMeshTopoChangers_1_1refiner2D.html#aa7c4230fdd2fc208071d9a060cd73ac1',1,'Foam::fvMeshTopoChangers::refiner2D::nBufferLayers_'],['../classFoam_1_1fvMeshTopoChangers_1_1multiFieldRefiner3D.html#a8f7e3a0c01d184615e6f167e1fca313d',1,'Foam::fvMeshTopoChangers::multiFieldRefiner3D::nBufferLayers_']]],
+  ['nrefinementiterations_5f_1',['nrefinementiterations_',['../classFoam_1_1fvMeshTopoChangers_1_1multiFieldRefiner2D.html#a2664f8b7dfa7e7bb5e126ec061db5659',1,'Foam::fvMeshTopoChangers::multiFieldRefiner2D::nRefinementIterations_'],['../classFoam_1_1fvMeshTopoChangers_1_1refiner2D.html#a41cbaa6ff430b3fd37d758a1fcfcc4e0',1,'Foam::fvMeshTopoChangers::refiner2D::nRefinementIterations_'],['../classFoam_1_1fvMeshTopoChangers_1_1multiFieldRefiner3D.html#ab82bad97a95ce23f4dfb9b37d240435d',1,'Foam::fvMeshTopoChangers::multiFieldRefiner3D::nRefinementIterations_']]]
+];

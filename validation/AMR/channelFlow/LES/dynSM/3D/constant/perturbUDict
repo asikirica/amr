@@ -1,0 +1,35 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  10
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    format      ascii;
+    class       dictionary;
+    location    "constant";
+    object      perturbUDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+// Expected turbulent Re(tau) Reynolds number with respect to utau
+Retau       392.24;
+
+// Streamwise component of flow. 0=x, 1=y, 2=z
+streamwise  0;
+
+// Spanwise component of flow. 0=x, 1=y, 2=z
+spanwise    2;
+
+// Halfheight of channel. This is the direction normal to both streamwise and spanwise directions
+h           1.0;
+
+// Set velocity to laminar profile
+setBulk     true;
+
+// Perturb velocity with some cosine like perturbations
+perturb     true;
+
+// ************************************************************************* //

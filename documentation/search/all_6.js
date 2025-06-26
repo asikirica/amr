@@ -1,0 +1,12 @@
+var searchData=
+[
+  ['hexref4_0',['hexref4',['../classFoam_1_1hexRef4.html',1,'Foam::hexRef4'],['../classFoam_1_1hexRef4.html#aa7678ed5c6c3f67cc6439d0389ef0551',1,'Foam::hexRef4::hexRef4(const polyMesh &amp;mesh, const bool readHistory=true)'],['../classFoam_1_1hexRef4.html#a424b6af893ef48723f9fcd320707eb73',1,'Foam::hexRef4::hexRef4(const polyMesh &amp;mesh, const labelList &amp;cellLevel, const labelList &amp;pointLevel, const refinementHistory4 &amp;history, const scalar level0Edge=-great)'],['../classFoam_1_1hexRef4.html#aada8545a1553326ebec09b37b191367c',1,'Foam::hexRef4::hexRef4(const polyMesh &amp;mesh, const labelList &amp;cellLevel, const labelList &amp;pointLevel, const scalar level0Edge=-great)'],['../classFoam_1_1hexRef4.html#ac258d30114d2c54d02f110069aff82b3',1,'Foam::hexRef4::hexRef4(const hexRef4 &amp;)=delete']]],
+  ['hexref4_2ec_1',['hexRef4.C',['../hexRef4_8C.html',1,'']]],
+  ['hexref4_2eh_2',['hexRef4.H',['../hexRef4_8H.html',1,'']]],
+  ['hexref4data_3',['hexref4data',['../classFoam_1_1hexRef4Data.html',1,'Foam::hexRef4Data'],['../classFoam_1_1hexRef4Data.html#a0f1ec5ef3e8fb10eb218cb995af14b4c',1,'Foam::hexRef4Data::hexRef4Data(const hexRef4Data &amp;)=delete'],['../classFoam_1_1hexRef4Data.html#ac8c822f76e0c72af2ff4bae1f7141a23',1,'Foam::hexRef4Data::hexRef4Data(const IOobject &amp;io, const UPtrList&lt; const labelList &gt; &amp;cellMaps, const UPtrList&lt; const labelList &gt; &amp;pointMaps, const UPtrList&lt; const hexRef4Data &gt; &amp;)'],['../classFoam_1_1hexRef4Data.html#aedd95407cb4f4bbd539a705dba5130af',1,'Foam::hexRef4Data::hexRef4Data(const IOobject &amp;io, const hexRef4Data &amp;, const labelList &amp;cellMap, const labelList &amp;pointMap)'],['../classFoam_1_1hexRef4Data.html#af958e59638f427cfdf2891b7e6b9228f',1,'Foam::hexRef4Data::hexRef4Data(const IOobject &amp;io)']]],
+  ['hexref4data_2ec_4',['hexRef4Data.C',['../hexRef4Data_8C.html',1,'']]],
+  ['hexref4data_2eh_5',['hexRef4Data.H',['../hexRef4Data_8H.html',1,'']]],
+  ['history_6',['history',['../classFoam_1_1hexRef4.html#ab00bae7be4895a2d3197b13fbd049261',1,'Foam::hexRef4']]],
+  ['history_5f_7',['history_',['../classFoam_1_1hexRef4.html#aba16bf8f985e09268ff1e2098e641668',1,'Foam::hexRef4']]],
+  ['historyindex_5f_8',['historyIndex_',['../classFoam_1_1fvMeshDistributors_1_1distributorRollingMPI.html#ae04281f1891e210fbf11999b3b5bfff3',1,'Foam::fvMeshDistributors::distributorRollingMPI']]]
+];

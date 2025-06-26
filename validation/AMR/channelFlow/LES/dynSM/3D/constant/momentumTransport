@@ -1,0 +1,38 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  10
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    format      ascii;
+    class       dictionary;
+    location    "constant";
+    object      momentumTransport;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+simulationType  LES;
+
+LES
+{
+    LESModel		dynamicSmagorinsky;
+    turbulence		on;
+    printCoeffs	on;
+    delta			cubeRootVol;
+
+    dynamicSmagorinskyCoeffs
+    {
+        filter          simple;
+        ce              1.048;
+    }
+
+    cubeRootVolCoeffs
+    {
+        deltaCoeff      1;
+    }
+}
+
+// ************************************************************************* //

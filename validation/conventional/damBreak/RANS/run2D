@@ -1,0 +1,51 @@
+#!/bin/bash
+
+# grids
+coarse=36
+medium=48
+fine=64
+
+
+# coarse
+cp -rf 2D coarse2D
+cd coarse2D
+chmod +x clean
+chmod +x run
+sed -i "s/cells.*[0-9][0-9]*;/cells $coarse;/g" system/blockMeshDict
+sed -i "s/kFunction/kqRWallFunction/g" 0.orig/k
+sed -i "s/kValue/\$internalField/g" 0.orig/k
+sed -i "s/nutFunction/nutkWallFunction/g" 0.orig/nut
+sed -i "s/nutValue/\$internalField/g" 0.orig/nut
+./clean
+sbatch run
+cd ..
+
+
+# medium
+cp -rf 2D medium2D
+cd medium2D
+chmod +x clean
+chmod +x run
+sed -i "s/cells.*[0-9][0-9]*;/cells $medium;/g" system/blockMeshDict
+sed -i "s/kFunction/kqRWallFunction/g" 0.orig/k
+sed -i "s/kValue/\$internalField/g" 0.orig/k
+sed -i "s/nutFunction/nutkWallFunction/g" 0.orig/nut
+sed -i "s/nutValue/\$internalField/g" 0.orig/nut
+./clean
+sbatch run
+cd ..
+
+
+# fine
+cp -rf 2D fine2D
+cd fine2D
+chmod +x clean
+chmod +x run
+sed -i "s/cells.*[0-9][0-9]*;/cells $fine;/g" system/blockMeshDict
+sed -i "s/kFunction/kqRWallFunction/g" 0.orig/k
+sed -i "s/kValue/\$internalField/g" 0.orig/k
+sed -i "s/nutFunction/nutkWallFunction/g" 0.orig/nut
+sed -i "s/nutValue/\$internalField/g" 0.orig/nut
+./clean
+sbatch run
+cd ..

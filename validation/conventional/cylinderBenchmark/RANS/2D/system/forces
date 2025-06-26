@@ -1,0 +1,27 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  10
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+forces
+{
+    type			forces;
+    libs			("libforces.so");
+
+    writeControl	timeStep;
+    writeInterval	1;
+    log				true;
+
+    patches			(object);
+
+    rho				rhoInf;
+    rhoInf			1;
+    CofR			(0.20 0.05 0.2);
+}
+
+// ************************************************************************* //

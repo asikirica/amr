@@ -1,0 +1,7 @@
+<map id="Foam::hexRef4::pointLevel" name="Foam::hexRef4::pointLevel">
+<area shape="rect" id="Node000001" title=" " alt="" coords="244,56,423,81"/>
+<area shape="rect" id="Node000002" href="$classFoam_1_1fvMeshTopoChangers_1_1multiFieldRefiner2D.html#a59e08004965a78ddf98ab6caf35f511c" title=" " alt="" coords="5,5,196,60"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="237,56,196,50,197,45,238,51"/>
+<area shape="rect" id="Node000003" href="$classFoam_1_1fvMeshTopoChangers_1_1refiner2D.html#a5801e4b71cf2a98d66a6e8cce068753c" title=" " alt="" coords="5,85,196,125"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="238,86,197,93,196,87,237,81"/>
+</map>

@@ -1,0 +1,17 @@
+#!/bin/bash
+
+current_path=$(pwd)
+
+# Restore original file only if backup exists
+if [ -f "$FOAM_SRC/Pstream/mpi/UPstream.C.orig" ]; then
+    cp $FOAM_SRC/Pstream/mpi/UPstream.C.orig $FOAM_SRC/Pstream/mpi/UPstream.C
+    rm $FOAM_SRC/Pstream/mpi/UPstream.C.orig
+    rm $FOAM_SRC/Pstream/mpi/UPstream.H
+else
+    echo "Backup file not found. No restoration performed."
+fi
+
+# Restore UPstream
+cd $FOAM_SRC/Pstream/mpi
+wmake
+cd $current_path

@@ -1,0 +1,555 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  10
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      blockMeshDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+convertToMeters	1;
+
+cells			100;
+
+BL				0.004;
+
+xmin			0;
+ymin			0;
+zmin			0;
+
+x1				0.6635;
+x2				0.161;
+x3				2.3955;
+
+y1				0.2985;
+y2				0.403;
+y3				0.2985;
+
+z1				0.161;
+z2				0.839;
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+x1Cells		#calc "round($cells * ($x1 / ($x1 + $x2 + $x3)) * (($x1 + $x2 + $x3) / ($z1 + $z2)) * 1.5 )";
+x2Cells		#calc "round($cells * ($x2 / ($x1 + $x2 + $x3)) * (($x1 + $x2 + $x3) / ($z1 + $z2)) * 1.5 )";
+x3Cells		#calc "round($cells * ($x3 / ($x1 + $x2 + $x3)) * (($x1 + $x2 + $x3) / ($z1 + $z2)) )";
+
+y1Cells		#calc "round($cells * ($y1 / ($y1 + $y2 + $y3)) * (($y1 + $y2 + $y3) / ($z1 + $z2)) * 1.5 )";
+y2Cells		#calc "round($cells * ($y2 / ($y1 + $y2 + $y3)) * (($y1 + $y2 + $y3) / ($z1 + $z2)) )";
+y3Cells		#calc "round($cells * ($y3 / ($y1 + $y2 + $y3)) * (($y1 + $y2 + $y3) / ($z1 + $z2)) * 1.5 )";
+
+z1Cells		#calc "round($cells * ($z1 / ($z1 + $z2)) * 3 )";
+z2Cells		#calc "round($cells * ($z2 / ($z1 + $z2)) * 1.5 )";
+
+L0			#calc "($z1 + $z2) / $cells / $BL";
+L1			#calc "$BL / (($z1 + $z2) / $cells)";
+L0c			#calc "4 * $L0";
+L1c			#calc "4 * $L1";
+
+vertices
+(
+	//BLOCK1
+    ($xmin  							$ymin								$zmin)						//0
+    (#calc "$xmin + $x1"				$ymin								$zmin)						//1
+    (#calc "$xmin + $x1"				#calc "$ymin + $y1"					$zmin)						//2
+    ($xmin								#calc "$ymin + $y1"					$zmin)						//3
+    ($xmin  							$ymin								#calc "$zmin + $z1")		//4
+    (#calc "$xmin + $x1"				$ymin								#calc "$zmin + $z1")		//5
+    (#calc "$xmin + $x1"				#calc "$ymin + $y1"					#calc "$zmin + $z1")		//6
+    ($xmin								#calc "$ymin + $y1"					#calc "$zmin + $z1")		//7
+
+	//BLOCK2
+    //1
+    (#calc "$xmin + $x1 + $x2"			$ymin								$zmin)						//8
+    (#calc "$xmin + $x1 + $x2"			#calc "$ymin + $y1"					$zmin)						//9
+    //2
+    //5
+    (#calc "$xmin + $x1 + $x2"			$ymin								#calc "$zmin + $z1")		//10
+    (#calc "$xmin + $x1 + $x2"			#calc "$ymin + $y1"					#calc "$zmin + $z1")		//11
+    //6
+
+	//BLOCK3
+    //8
+    (#calc "$xmin + $x1 + $x2 + $x3"	$ymin								$zmin)						//12
+    (#calc "$xmin + $x1 + $x2 + $x3"	#calc "$ymin + $y1"					$zmin)						//13
+    //9
+    //10
+    (#calc "$xmin + $x1 + $x2 + $x3"	$ymin								#calc "$zmin + $z1")		//14
+    (#calc "$xmin + $x1 + $x2 + $x3"	#calc "$ymin + $y1"					#calc "$zmin + $z1")		//15
+    //11
+
+	//BLOCK4
+    //9
+	//13
+    (#calc "$xmin + $x1 + $x2 + $x3"	#calc "$ymin + $y1 + $y2"			$zmin)						//16
+    (#calc "$xmin + $x1 + $x2"			#calc "$ymin + $y1 + $y2"			$zmin)						//17
+    //11
+    //15
+    (#calc "$xmin + $x1 + $x2 + $x3"	#calc "$ymin + $y1 + $y2"			#calc "$zmin + $z1")		//18
+    (#calc "$xmin + $x1 + $x2"			#calc "$ymin + $y1 + $y2"			#calc "$zmin + $z1")		//19
+
+	//BLOCK5
+    //3
+	//2
+    (#calc "$xmin + $x1"				#calc "$ymin + $y1 + $y2"			$zmin)						//20
+    ($xmin								#calc "$ymin + $y1 + $y2"			$zmin)						//21
+    //7
+    //6
+    (#calc "$xmin + $x1"				#calc "$ymin + $y1 + $y2"			#calc "$zmin + $z1")		//22
+    ($xmin								#calc "$ymin + $y1 + $y2"			#calc "$zmin + $z1")		//23
+
+	//BLOCK6
+    //21
+	//20
+    (#calc "$xmin + $x1"				#calc "$ymin + $y1 + $y2 + $y3"		$zmin)						//24
+    ($xmin								#calc "$ymin + $y1 + $y2 + $y3"		$zmin)						//25
+    //23
+    //22
+    (#calc "$xmin + $x1"				#calc "$ymin + $y1 + $y2 + $y3"		#calc "$zmin + $z1")		//26
+    ($xmin								#calc "$ymin + $y1 + $y2 + $y3"		#calc "$zmin + $z1")		//27
+
+	//BLOCK7
+	//20
+    //17
+    (#calc "$xmin + $x1 + $x2"			#calc "$ymin + $y1 + $y2 + $y3"		$zmin)						//28
+	//24
+    //22
+    //19
+    (#calc "$xmin + $x1 + $x2"			#calc "$ymin + $y1 + $y2 + $y3"		#calc "$zmin + $z1")		//29
+	//26
+
+	//BLOCK8
+	//17
+	//16
+    (#calc "$xmin + $x1 + $x2 + $x3"	#calc "$ymin + $y1 + $y2 + $y3"		$zmin)						//30
+	//28
+    //19
+	//18
+    (#calc "$xmin + $x1 + $x2 + $x3"	#calc "$ymin + $y1 + $y2 + $y3"		#calc "$zmin + $z1")		//31
+	//29
+
+	//BLOCK9
+    //4
+    //5
+    //6
+    //7
+    ($xmin  							$ymin								#calc "$zmin + $z1 + $z2")	//32
+    (#calc "$xmin + $x1"				$ymin								#calc "$zmin + $z1 + $z2")	//33
+    (#calc "$xmin + $x1"				#calc "$ymin + $y1"					#calc "$zmin + $z1 + $z2")	//34
+    ($xmin								#calc "$ymin + $y1"					#calc "$zmin + $z1 + $z2")	//35
+
+	//BLOCK10
+    //5
+    //10
+    //11
+    //6
+    //33
+    (#calc "$xmin + $x1 + $x2"			$ymin								#calc "$zmin + $z1 + $z2")	//36
+    (#calc "$xmin + $x1 + $x2"			#calc "$ymin + $y1"					#calc "$zmin + $z1 + $z2")	//37
+    //34
+
+	//BLOCK11
+    //10
+    //14
+    //15
+    //11
+    //36
+    (#calc "$xmin + $x1 + $x2 + $x3"	$ymin								#calc "$zmin + $z1 + $z2")	//38
+    (#calc "$xmin + $x1 + $x2 + $x3"	#calc "$ymin + $y1"					#calc "$zmin + $z1 + $z2")	//39
+    //37
+
+	//BLOCK12
+    //11
+    //15
+    //18
+    //19
+    //37
+    //39
+    (#calc "$xmin + $x1 + $x2 + $x3"	#calc "$ymin + $y1 + $y2"			#calc "$zmin + $z1 + $z2")	//40
+    (#calc "$xmin + $x1 + $x2"			#calc "$ymin + $y1 + $y2"			#calc "$zmin + $z1 + $z2")	//41
+
+	//BLOCK13
+    //6
+    //11
+    //19
+    //22
+    //34
+    //37
+	//41
+    (#calc "$xmin + $x1"				#calc "$ymin + $y1 + $y2"			#calc "$zmin + $z1 + $z2")	//42
+
+	//BLOCK14
+    //7
+    //6
+    //22
+    //23
+    //35
+    //34
+    //42
+    ($xmin								#calc "$ymin + $y1 + $y2"			#calc "$zmin + $z1 + $z2")	//43
+
+	//BLOCK15
+    //23
+    //22
+    //26
+    //27
+    //43
+    //42
+    (#calc "$xmin + $x1"				#calc "$ymin + $y1 + $y2 + $y3"		#calc "$zmin + $z1 + $z2")	//44
+    ($xmin								#calc "$ymin + $y1 + $y2 + $y3"		#calc "$zmin + $z1 + $z2")	//45
+
+	//BLOCK16
+    //22
+    //19
+    //29
+	//26
+    //42
+    //41
+    (#calc "$xmin + $x1 + $x2"			#calc "$ymin + $y1 + $y2 + $y3"		#calc "$zmin + $z1 + $z2")	//46
+	//44
+
+	//BLOCK17
+    //19
+	//18
+    //31
+	//29
+    //41
+	//40
+    (#calc "$xmin + $x1 + $x2 + $x3"	#calc "$ymin + $y1 + $y2 + $y3"		#calc "$zmin + $z1 + $z2")	//47
+	//46
+);
+
+blocks
+(
+    hex (0 1 2 3 4 5 6 7)			($x1Cells $y1Cells $z1Cells)	simpleGrading
+																	(
+																		(
+																			(0.20 0.30 $L0)
+																			(0.60 0.40 1)
+																			(0.20 0.30 $L1)
+																		)
+																		(
+																			(0.20 0.30 $L0)
+																			(0.60 0.40 1)
+																			(0.20 0.30 $L1)
+																		)
+																		(
+																			(0.20 0.30 $L0)
+																			(0.60 0.40 1)
+																			(0.20 0.30 $L1c)
+																		)
+																	)
+    hex (1 8 9 2 5 10 11 6)			($x2Cells $y1Cells $z1Cells)	simpleGrading
+																	(
+																		1
+																		(
+																			(0.20 0.30 $L0)
+																			(0.60 0.40 1)
+																			(0.20 0.30 $L1)
+																		)
+																		(
+																			(0.20 0.30 $L0)
+																			(0.60 0.40 1)
+																			(0.20 0.30 $L1c)
+																		)
+																	)
+    hex (8 12 13 9 10 14 15 11)		($x3Cells $y1Cells $z1Cells)	simpleGrading
+																	(
+																		(
+																			(0.20 0.30 $L0)
+																			(0.60 0.40 1)
+																			(0.20 0.30 $L1)
+																		)
+																		(
+																			(0.20 0.30 $L0)
+																			(0.60 0.40 1)
+																			(0.20 0.30 $L1)
+																		)
+																		(
+																			(0.20 0.30 $L0)
+																			(0.60 0.40 1)
+																			(0.20 0.30 $L1c)
+																		)
+																	)
+
+    hex (9 13 16 17 11 15 18 19)	($x3Cells $y2Cells $z1Cells)	simpleGrading
+																	(
+																		(
+																			(0.20 0.30 $L0)
+																			(0.60 0.40 1)
+																			(0.20 0.30 $L1)
+																		)
+																		1
+																		(
+																			(0.20 0.30 $L0)
+																			(0.60 0.40 1)
+																			(0.20 0.30 $L1c)
+																		)
+																	)
+    hex (3 2 20 21 7 6 22 23)		($x1Cells $y2Cells $z1Cells)	simpleGrading
+																	(
+																		(
+																			(0.20 0.30 $L0)
+																			(0.60 0.40 1)
+																			(0.20 0.30 $L1)
+																		)
+																		1
+																		(
+																			(0.20 0.30 $L0)
+																			(0.60 0.40 1)
+																			(0.20 0.30 $L1c)
+																		)
+																	)
+
+    hex (21 20 24 25 23 22 26 27)	($x1Cells $y3Cells $z1Cells)	simpleGrading
+																	(
+																		(
+																			(0.20 0.30 $L0)
+																			(0.60 0.40 1)
+																			(0.20 0.30 $L1)
+																		)
+																		(
+																			(0.20 0.30 $L0)
+																			(0.60 0.40 1)
+																			(0.20 0.30 $L1)
+																		)
+																		(
+																			(0.20 0.30 $L0)
+																			(0.60 0.40 1)
+																			(0.20 0.30 $L1c)
+																		)
+																	)
+    hex (20 17 28 24 22 19 29 26)	($x2Cells $y3Cells $z1Cells)	simpleGrading
+																	(
+																		1
+																		(
+																			(0.20 0.30 $L0)
+																			(0.60 0.40 1)
+																			(0.20 0.30 $L1)
+																		)
+																		(
+																			(0.20 0.30 $L0)
+																			(0.60 0.40 1)
+																			(0.20 0.30 $L1c)
+																		)
+																	)
+    hex (17 16 30 28 19 18 31 29)	($x3Cells $y3Cells $z1Cells)	simpleGrading
+																	(
+																		(
+																			(0.20 0.30 $L0)
+																			(0.60 0.40 1)
+																			(0.20 0.30 $L1)
+																		)
+																		(
+																			(0.20 0.30 $L0)
+																			(0.60 0.40 1)
+																			(0.20 0.30 $L1)
+																		)
+																		(
+																			(0.20 0.30 $L0)
+																			(0.60 0.40 1)
+																			(0.20 0.30 $L1c)
+																		)
+																	)
+
+    hex (4 5 6 7 32 33 34 35)		($x1Cells $y1Cells $z2Cells)	simpleGrading
+																	(
+																		(
+																			(0.20 0.30 $L0)
+																			(0.60 0.40 1)
+																			(0.20 0.30 $L1)
+																		)
+																		(
+																			(0.20 0.30 $L0)
+																			(0.60 0.40 1)
+																			(0.20 0.30 $L1)
+																		)
+																		$L0
+																	)
+    hex (5 10 11 6 33 36 37 34)		($x2Cells $y1Cells $z2Cells)	simpleGrading
+																	(
+																		1
+																		(
+																			(0.20 0.30 $L0)
+																			(0.60 0.40 1)
+																			(0.20 0.30 $L1)
+																		)
+																		$L0
+																	)
+    hex (10 14 15 11 36 38 39 37)	($x3Cells $y1Cells $z2Cells)	simpleGrading
+																	(
+																		(
+																			(0.20 0.30 $L0)
+																			(0.60 0.40 1)
+																			(0.20 0.30 $L1)
+																		)
+																		(
+																			(0.20 0.30 $L0)
+																			(0.60 0.40 1)
+																			(0.20 0.30 $L1)
+																		)
+																		$L0
+																	)
+
+    hex (11 15 18 19 37 39 40 41)	($x3Cells $y2Cells $z2Cells)	simpleGrading
+																	(
+																		(
+																			(0.20 0.30 $L0)
+																			(0.60 0.40 1)
+																			(0.20 0.30 $L1)
+																		)
+																		1
+																		$L0
+																	)
+    hex (6 11 19 22 34 37 41 42)	($x2Cells $y2Cells $z2Cells)	simpleGrading
+																	(
+																		1
+																		1
+																		$L0
+																	)
+    hex (7 6 22 23 35 34 42 43)		($x1Cells $y2Cells $z2Cells)	simpleGrading
+																	(
+																		(
+																			(0.20 0.30 $L0)
+																			(0.60 0.40 1)
+																			(0.20 0.30 $L1)
+																		)
+																		1
+																		$L0
+																	)
+
+    hex (23 22 26 27 43 42 44 45)	($x1Cells $y3Cells $z2Cells)	simpleGrading
+																	(
+																		(
+																			(0.20 0.30 $L0)
+																			(0.60 0.40 1)
+																			(0.20 0.30 $L1)
+																		)
+																		(
+																			(0.20 0.30 $L0)
+																			(0.60 0.40 1)
+																			(0.20 0.30 $L1)
+																		)
+																		$L0
+																	)
+    hex (22 19 29 26 42 41 46 44)	($x2Cells $y3Cells $z2Cells)	simpleGrading
+																	(
+																		1
+																		(
+																			(0.20 0.30 $L0)
+																			(0.60 0.40 1)
+																			(0.20 0.30 $L1)
+																		)
+																		$L0
+																	)
+    hex (19 18 31 29 41 40 47 46)	($x3Cells $y3Cells $z2Cells)	simpleGrading
+																	(
+																		(
+																			(0.20 0.30 $L0)
+																			(0.60 0.40 1)
+																			(0.20 0.30 $L1)
+																		)
+																		(
+																			(0.20 0.30 $L0)
+																			(0.60 0.40 1)
+																			(0.20 0.30 $L1)
+																		)
+																		$L0
+																	)
+);
+
+boundary
+(
+    walls
+    {
+        type wall;
+        faces
+        (
+            (0 1 5 4)
+            (1 8 10 5)
+            (8 12 14 10)
+            (12 13 15 14)
+            (13 16 18 15)
+            (16 30 31 18)
+            (28 30 31 29)
+            (24 28 29 26)
+            (25 24 26 27)
+            (0 3 7 4)
+            (3 21 23 7)
+            (21 25 27 23)
+			(4 5 33 32)
+			(5 10 36 33)
+			(10 14 38 36)
+			(14 15 39 38)
+			(15 18 40 39)
+			(18 31 47 40)
+			(29 31 47 46)
+			(26 29 46 44)
+			(27 26 44 45)
+			(23 27 45 43)
+			(7 23 43 35)
+			(4 7 35 32)
+        );
+    }
+
+    bottom
+    {
+        type wall;
+        faces
+        (
+            (0 1 2 3)
+            (1 8 9 2)
+			(8 12 13 9)
+			(9 13 16 17)
+			(3 2 20 21)
+			(21 20 24 25)
+			(20 17 28 24)
+			(17 16 30 28)
+        );
+    }
+
+    top
+    {
+        type patch;
+        faces
+        (
+            (32 33 34 35)
+            (33 36 37 34)
+			(36 38 39 37)
+			(37 39 40 41)
+			(34 37 41 42)
+			(35 34 42 43)
+			(43 42 44 45)
+			(42 41 46 44)
+			(41 40 47 46)
+        );
+    }
+
+    object
+    {
+        type wall;
+        faces
+        (
+            (2 9 11 6)
+            (9 17 19 11)
+            (20 17 19 22)
+            (2 20 22 6)
+            (6 11 19 22)
+        );
+    }
+
+    internal
+    {
+        type internal;
+        faces ();
+    }
+);
+
+// ************************************************************************* //

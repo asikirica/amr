@@ -1,0 +1,76 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  10
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    format      ascii;
+    class       volVectorField;
+    location    "0";
+    object      U;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [0 1 -1 0 0 0 0];
+
+internalField   uniform (0 0 0);
+
+boundaryField
+{
+    #includeEtc "caseDicts/setConstraintTypes"
+
+    bottom
+    {
+        type            noSlip;
+    }
+    top
+    {
+        type            noSlip;
+    }
+    inlet
+    {
+		type			codedFixedValue;
+        value           $internalField;
+        name			parabolicProfile;
+        code
+        #{
+			const fvPatch& boundaryPatch = this->patch(); 
+			const vectorField& Cf = boundaryPatch.Cf(); 
+
+			vectorField& v = *this;
+
+	        scalar t = this->db().time().value();
+	        scalar Um = 2.25;
+	        scalar H = 0.41;
+
+			forAll(Cf,faceI)
+			{
+				scalar y = Cf[faceI].y();
+				scalar z = Cf[faceI].z();
+				scalar u = 16.0*Um*sin(constant::mathematical::pi*t/8.0)*y*z*(H-y)*(H-z)/pow(H,4.0);
+				v[faceI] = vector(u, 0, 0);
+			}
+        #};
+    }
+    outlet
+    {
+        type            zeroGradient;
+    }
+    object
+    {
+        type            noSlip;
+    }
+    front
+    {
+        type            noSlip;
+    }
+    back
+    {
+        type            noSlip;
+    }
+}
+
+// ************************************************************************* //

@@ -1,0 +1,49 @@
+PROJECT_NAME = "AMR"
+
+# Input file paths
+INPUT                  = .
+DOT_PATH               = 
+FILE_PATTERNS          = *.c *.cpp *.h *.hpp *.C *.H
+RECURSIVE              = YES
+
+# Extract documentation from all code elements
+EXTRACT_ALL            = YES
+EXTRACT_PRIVATE        = YES
+EXTRACT_STATIC         = YES
+EXTENSION_MAPPING      = H=C++ C=C++
+
+# Graph generation settings
+HAVE_DOT              = YES  # Enables GraphViz-based diagrams
+UML_LOOK              = YES  # UML-style inheritance diagrams
+CALL_GRAPH            = YES
+CALLER_GRAPH          = YES
+CALL_GRAPH_DEPTH      = 5    # Limits depth for clarity
+CLASS_GRAPH           = YES  # Enables class relationship graphs
+COLLABORATION_GRAPH   = YES  # Generates collaboration graphs
+GROUP_GRAPHS         = YES   # Enables module-level graphs
+INCLUDE_GRAPH         = YES  # Generates include dependency graphs
+INCLUDED_BY_GRAPH     = YES  # Shows reverse dependencies
+
+# Graph appearance settings
+DOT_IMAGE_FORMAT      = svg  # Higher quality vector images
+DOT_TRANSPARENT       = YES  # Transparent background for better visuals
+DOT_GRAPH_MAX_NODES   = 100  # Prevents clutter in large projects
+DOT_MULTI_TARGETS     = YES  # Allows multiple graphs
+
+# Markdown and LaTeX support for enhanced documentation
+MARKDOWN_SUPPORT      = YES  # Enables Markdown support
+USE_MATHJAX           = YES  # Allows rendering of LaTeX equations
+
+# Navigation and usability improvements
+GENERATE_TREEVIEW     = YES  # Adds a collapsible navigation tree
+GENERATE_HTML         = YES  # Ensures HTML documentation is produced
+GENERATE_LATEX        = NO   # Disables LaTeX output unless needed
+GENERATE_XML          = NO   # Disables XML output unless required
+GENERATE_DOT          = YES
+DOT_CLEANUP           = NO
+
+# Output control settings
+QUIET                 = NO   # Show warnings and progress messages
+WARN_IF_UNDOCUMENTED  = YES  # Warn about undocumented code
+WARN_NO_PARAMDOC      = YES  # Warn if function parameters lack descriptions
+

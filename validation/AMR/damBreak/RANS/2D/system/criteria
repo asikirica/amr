@@ -1,0 +1,303 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  10
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+criteria
+{
+	type			coded;
+	libs			("libutilityFunctionObjects.so");
+
+	name			criteria;
+
+	writeControl	adjustableRunTime;
+	writeInterval	0.01;
+
+	codeInclude
+	#{
+		#include "OFstream.H"
+		#include "scalarList.H"
+	#};
+
+	codeData
+	#{
+		autoPtr<OFstream> heightFile;
+		autoPtr<OFstream> pressureFile;
+		scalarList lastValidHeights;
+		scalarList lastValidPressures;
+	#};
+
+	codeRead
+	#{
+		mkDir("postProcessing");
+		heightFile.reset(new OFstream("postProcessing/height.dat"));
+		pressureFile.reset(new OFstream("postProcessing/pressure.dat"));
+		lastValidHeights.setSize(4, 0.0);
+		lastValidPressures.setSize(8, 0.0);
+	#};
+
+	codeExecute
+	#{
+		// lookup fields and values
+		const volScalarField& alpha = mesh().lookupObject<volScalarField>("alpha.water");
+		const volScalarField& p = mesh().lookupObject<volScalarField>("p");
+		const vectorField& C = mesh().C();
+		const scalar cellDistribution = 100;
+		const scalar maxRefinement = 2;
+		const scalar filter = 5.0;
+		const scalar cutoffValue = 1e-5;
+		dimensionedScalar D("D", dimLength, 1.0);
+
+
+		// height measurement locations
+		const scalar center = 0.05;
+		const List<point> heightProbes = {
+											{0.496, center, 0},  // H1
+											{0.992, center, 0},  // H2
+											{1.488, center, 0},  // H3
+											{2.638, center, 0}   // H4
+										};
+		scalarList heights(heightProbes.size(), 0.0);
+
+
+		// pressure measurement locations
+		const scalar back = 0.05;
+		const scalar top = 0.05;
+		const List<point> pressureProbes = {
+											{0.825, back, 0.021},  // P1
+											{0.825, back, 0.061},  // P2
+											{0.825, back, 0.100},  // P3
+											{0.825, back, 0.140},  // P4
+											{0.804, top,  0.161},  // P5
+											{0.764, top,  0.161},  // P6
+											{0.725, top,  0.161},  // P7
+											{0.685, top,  0.161}   // P8
+											};
+		scalarList pressures(pressureProbes.size(), 0.0);
+
+
+		// helper function
+		auto smoothField = [&](const volScalarField& field) -> volScalarField
+		{
+			const scalar sigma = filter * pow((Foam::sum(mesh().V()).value()) / mesh().nCells(), 1.0/3.0);
+			volScalarField result = field;
+
+			forAll(field, celli)
+			{
+				scalar sum = field[celli];
+				scalar weights = 1.0;
+				
+				const auto& neighbors = mesh().cellCells()[celli];
+				const auto& centers = mesh().cellCentres();
+				
+				forAll(neighbors, i)
+				{
+					const scalar d = mag(centers[celli] - centers[neighbors[i]]);
+					const scalar w = exp(-d * d / (2.0 * sigma * sigma));
+					sum += w * field[neighbors[i]];
+					weights += w;
+				}
+				
+				result[celli] = sum/weights;
+			}
+			return result;
+		};
+
+
+		// normalized alpha gradient magnitude field
+		if (!mesh().foundObject<volScalarField>("normalizedMagGradAlpha"))
+		{
+			autoPtr<volScalarField> normalizedMagGradAlphaPtr_
+			(
+				new volScalarField
+				(
+					IOobject
+					(
+						"normalizedMagGradAlpha",
+						mesh().time().timeName(),
+						mesh(),
+						IOobject::NO_READ,
+						IOobject::AUTO_WRITE
+					),
+					mesh(),
+					dimensionedScalar("normalizedMagGradAlpha", dimless, cutoffValue)
+				)
+			);
+			mesh().objectRegistry::store(normalizedMagGradAlphaPtr_);
+		}
+
+
+		// lookup normalized alpha gradient magnitude field
+		volScalarField& normalizedMagGradAlpha = 
+			const_cast<volScalarField&>
+			(
+				mesh().lookupObject<volScalarField>("normalizedMagGradAlpha")
+			);
+
+
+		volScalarField dimlessMagGradAlpha = mag(fvc::grad(alpha)) * D;
+		normalizedMagGradAlpha = (smoothField(dimlessMagGradAlpha) + cutoffValue) / 
+			max(gMax(smoothField(dimlessMagGradAlpha).primitiveField()) + cutoffValue, cutoffValue);
+
+
+		// calculate heights
+		forAll(heightProbes, probeI)
+		{
+			const point& probe = heightProbes[probeI];
+			scalar maxHeight = -GREAT;
+			scalar maxWeight = 0.0;
+
+			forAll(C, cellI)
+			{
+				vector delta(C[cellI].x() - probe.x(),
+							 C[cellI].y() - probe.y(),
+							 0);
+				scalar dist = mag(delta);
+				
+				// search radius
+				if (dist < (1.0 / cellDistribution / pow(2, maxRefinement)))
+				{
+					scalar weight = exp(-sqr(dist / (1.0 / cellDistribution / pow(2, maxRefinement))));
+					scalar z = C[cellI].z();
+					scalar a = alpha[cellI];
+					
+					// interface height contribution
+					if (a > 0.5)
+					{
+						forAll(mesh().cellCells()[cellI], nbrI)
+						{
+							label nbrCell = mesh().cellCells()[cellI][nbrI];
+							if (alpha[nbrCell] < 0.5)
+							{
+								scalar z1 = z;
+								scalar z2 = C[nbrCell].z();
+								scalar a1 = a;
+								scalar a2 = alpha[nbrCell];
+								
+								scalar height = z1 + (z2 - z1) * (0.5 - a1)/(a2 - a1);
+								
+								if (height > maxHeight)
+								{
+									maxHeight = height;
+									maxWeight = weight;
+								}
+							}
+						}
+					}
+				}
+			}
+
+			reduce(maxHeight, maxOp<scalar>());
+			reduce(maxWeight, maxOp<scalar>());
+			
+			heights[probeI] = (maxWeight > SMALL) ? maxHeight : 0.0;
+		}
+
+
+		// hack to prevent spikes
+		forAll(heights, i)
+		{
+			if (heights[i] < cutoffValue && lastValidHeights[i] > cutoffValue)
+			{
+				heights[i] = lastValidHeights[i];
+			}
+		}
+		lastValidHeights = heights;
+
+
+		// calculate pressures
+		forAll(pressureProbes, probeI)
+		{
+			const point& probe = pressureProbes[probeI];
+
+			// search radius
+			const scalar maxRadius = 1.0;
+			const scalar growFactor = 1.5;
+			scalar radius = 0.001;
+			scalar localSearchRadius = maxRadius;
+			
+			while (radius < maxRadius)
+			{
+				label cellCount = 0;
+				forAll(C, cellI)
+				{
+					if (mag(C[cellI] - probe) < radius)
+					{
+						cellCount++;
+					}
+				}
+
+				// combine cell data
+				reduce(cellCount, sumOp<label>());
+				
+				if (cellCount >= maxRefinement)
+				{
+					localSearchRadius = radius;
+					break;
+				}
+				
+				radius *= growFactor;
+			}
+
+			// calculate pressure			
+			scalar sumP = 0.0;
+			scalar sumW = 0.0;
+
+			forAll(C, cellI) 
+			{
+				scalar dist = mag(C[cellI] - probe);
+				if (dist < localSearchRadius)
+				{
+					scalar h = 0.5 * localSearchRadius;
+
+					scalar w = exp(-pow(dist/(h + SMALL), 2));
+
+					sumP += w * p[cellI];
+					sumW += w;
+				}
+			}
+
+			reduce(sumP, sumOp<scalar>());
+			reduce(sumW, sumOp<scalar>());
+			
+			pressures[probeI] = (sumW > SMALL) ? sumP/sumW : 0.0;
+		}
+
+
+		// hack to prevent spikes
+		forAll(pressures, i)
+		{
+			if (pressures[i] < cutoffValue && lastValidPressures[i] > cutoffValue)
+			{
+				pressures[i] = lastValidPressures[i];
+			}
+		}
+		lastValidPressures = pressures;
+
+
+		// log results to output files
+		if (Pstream::master())
+		{
+			heightFile() << mesh().time().timeName();
+			forAll(heights, i)
+			{
+				heightFile() << " " << heights[i];
+			}
+			heightFile() << endl;
+
+			pressureFile() << mesh().time().timeName();
+			forAll(pressures, i)
+			{
+				pressureFile() << " " << pressures[i];
+			}
+			pressureFile() << endl;
+		}
+	#};
+}
+
+// ************************************************************************* //

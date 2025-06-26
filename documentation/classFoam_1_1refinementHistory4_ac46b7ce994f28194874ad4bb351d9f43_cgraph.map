@@ -1,0 +1,8 @@
+<map id="Foam::refinementHistory4::apply" name="Foam::refinementHistory4::apply">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,29,179,69"/>
+<area shape="rect" id="Node000002" href="$classFoam_1_1refinementHistory4.html#a1e1622b373ed13946cab67446b177411" title=" " alt="" coords="227,29,400,69"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="179,47,213,47,213,52,179,52"/>
+<area shape="rect" id="Node000003" href="$classFoam_1_1refinementHistory4.html#a80ec8f8d7ee18a579540efbc0e3259dd" title=" " alt="" coords="448,29,621,69"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="400,47,434,47,434,52,400,52"/>
+<area shape="poly" id="edge3_Node000003_Node000003" title=" " alt="" coords="493,30,491,20,497,10,512,5,535,3,561,6,575,13,572,18,559,11,535,8,513,10,501,15,496,21,498,28"/>
+</map>

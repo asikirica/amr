@@ -1,0 +1,17 @@
+digraph "Foam::refinementHistory4::markCommonCells"
+{
+ // LATEX_PDF_SIZE
+  bgcolor="transparent";
+  edge [fontname=Helvetica,fontsize=10,labelfontname=Helvetica,labelfontsize=10];
+  node [fontname=Helvetica,fontsize=10,shape=box,height=0.2,width=0.4];
+  rankdir="RL";
+  Node1 [id="Node000001",label="Foam::refinementHistory4\l::markCommonCells",height=0.2,width=0.4,color="gray40", fillcolor="grey60", style="filled", fontcolor="black",tooltip=" "];
+  Node1 -> Node2 [id="edge1_Node000001_Node000002",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node2 [id="Node000002",label="Foam::refinementHistory4::add",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$classFoam_1_1refinementHistory4.html#a1cea1588a4ec11ca25e3298d400c2eb1",tooltip=" "];
+  Node2 -> Node3 [id="edge2_Node000002_Node000003",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node3 [id="Node000003",label="Foam::refinementHistory4\lConstraint::add",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$classFoam_1_1refinementHistory4Constraint.html#a33c85e79ae6300e7f9578188d3f356e2",tooltip=" "];
+  Node1 -> Node4 [id="edge3_Node000001_Node000004",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node4 [id="Node000004",label="Foam::refinementHistory4\l::apply",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$classFoam_1_1refinementHistory4.html#ac46b7ce994f28194874ad4bb351d9f43",tooltip=" "];
+  Node4 -> Node5 [id="edge4_Node000004_Node000005",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node5 [id="Node000005",label="Foam::refinementHistory4\lConstraint::apply",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$classFoam_1_1refinementHistory4Constraint.html#a400ed17f26d19e2729516ac3154bf736",tooltip=" "];
+}

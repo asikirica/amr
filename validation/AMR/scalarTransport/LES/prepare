@@ -1,0 +1,5 @@
+#!/bin/bash
+
+chmod +x */*/clean */*/run
+
+cp -rf ../../../conventional/scalarTransport/RANS/coarse3D STD/

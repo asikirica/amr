@@ -1,0 +1,7 @@
+**/testRunner
+**/constant
+/tests/testCases/channelFlow/constant/polyMesh
+!/tests/testCases/channelFlow/system
+!/tests/testCases/channelFlow/constant
+!/tests/testCases/channelFlow/0
+logs

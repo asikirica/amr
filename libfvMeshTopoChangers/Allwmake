@@ -1,0 +1,33 @@
+#!/bin/bash
+
+current_path=$(pwd)
+
+# Build libfvMeshTopoChangers2D
+cd libfvMeshTopoChangers2D
+wmake libso
+cd $current_path
+
+# Build libfvMeshTopoChangers3D
+cd libfvMeshTopoChangers3D
+wmake libso
+cd $current_path
+
+# Build decomposeParMesh2D
+cd applications/utilities/parallelProcessing/decomposeParMesh2D
+wmake
+cd $current_path
+
+# Build decomposeParMesh3D
+cd applications/utilities/parallelProcessing/decomposeParMesh3D
+wmake
+cd $current_path
+
+# Build reconstructParMesh2D
+cd applications/utilities/parallelProcessing/reconstructParMesh2D
+wmake
+cd $current_path
+
+# Build reconstructParMesh3D
+cd applications/utilities/parallelProcessing/reconstructParMesh3D
+wmake
+cd $current_path

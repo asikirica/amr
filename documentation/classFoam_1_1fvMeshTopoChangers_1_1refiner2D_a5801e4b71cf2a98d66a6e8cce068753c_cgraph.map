@@ -1,0 +1,11 @@
+<map id="Foam::fvMeshTopoChangers::refiner2D::refiner2D" name="Foam::fvMeshTopoChangers::refiner2D::refiner2D">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,85,196,125"/>
+<area shape="rect" id="Node000002" href="$classFoam_1_1hexRef4.html#a2c3c5ae0133bd4d47643ff0d576bce8c" title=" " alt="" coords="276,5,447,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="142,82,190,61,243,41,278,31,279,36,245,46,192,66,144,87"/>
+<area shape="rect" id="Node000003" href="$classFoam_1_1fvMeshTopoChangers_1_1refiner2D.html#a942d6cafe3e60416e1790d3fec3772a2" title=" " alt="" coords="244,55,479,95"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="196,91,230,87,230,93,197,97"/>
+<area shape="rect" id="Node000004" href="$classFoam_1_1hexRef4.html#a9295a14afd053d6bb2e2f7292d0ca3e1" title=" " alt="" coords="272,120,451,145"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="197,112,259,119,258,124,196,118"/>
+<area shape="rect" id="Node000005" href="$classFoam_1_1fvMeshTopoChangers_1_1refiner2D.html#a21660fd28fe9974c5d4798850d3e2733" title=" " alt="" coords="266,170,457,210"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="155,122,245,154,275,164,274,169,243,159,153,127"/>
+</map>

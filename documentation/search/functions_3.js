@@ -1,0 +1,5 @@
+var searchData=
+[
+  ['error_0',['error',['../classFoam_1_1fvMeshTopoChangers_1_1multiFieldRefiner3D.html#ae0ac967131e04025bedc9afde0640e23',1,'Foam::fvMeshTopoChangers::multiFieldRefiner3D::error(const scalarField &amp;fld, const scalar minLevel, const scalar maxLevel) const'],['../classFoam_1_1fvMeshTopoChangers_1_1multiFieldRefiner3D.html#a3c20fe04bdcfa2e3ea07c207b0d03318',1,'Foam::fvMeshTopoChangers::multiFieldRefiner3D::error(const scalarField &amp;fld, const labelList &amp;cells, const scalar minLevel, const scalar maxLevel) const']]],
+  ['extendmarkedcells_1',['extendmarkedcells',['../classFoam_1_1fvMeshTopoChangers_1_1multiFieldRefiner2D.html#ad522b261c22003389bcf2c408a2b5d6a',1,'Foam::fvMeshTopoChangers::multiFieldRefiner2D::extendMarkedCells()'],['../classFoam_1_1fvMeshTopoChangers_1_1refiner2D.html#a2ded7dcc0ac0832f0e071606dd196007',1,'Foam::fvMeshTopoChangers::refiner2D::extendMarkedCells()'],['../classFoam_1_1fvMeshTopoChangers_1_1multiFieldRefiner3D.html#aa1ffab8a35e41cd9c3f9f3dc337592c7',1,'Foam::fvMeshTopoChangers::multiFieldRefiner3D::extendMarkedCells()']]]
+];

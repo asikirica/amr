@@ -1,0 +1,6 @@
+var searchData=
+[
+  ['dict_5f_0',['dict_',['../classFoam_1_1fvMeshTopoChangers_1_1multiFieldRefiner2D.html#aabca18882e5378f97dbedef381f1164e',1,'Foam::fvMeshTopoChangers::multiFieldRefiner2D::dict_'],['../classFoam_1_1fvMeshTopoChangers_1_1refiner2D.html#a93597d7f84b09d41ac26987ee7984733',1,'Foam::fvMeshTopoChangers::refiner2D::dict_'],['../classFoam_1_1fvMeshTopoChangers_1_1multiFieldRefiner3D.html#a2d79aadbf7f1e699f16e50a227f41bf8',1,'Foam::fvMeshTopoChangers::multiFieldRefiner3D::dict_']]],
+  ['distributor_5f_1',['distributor_',['../classFoam_1_1fvMeshDistributors_1_1distributorMPI.html#a7fa7d35720cccec662d9463891ef7e3a',1,'Foam::fvMeshDistributors::distributorMPI::distributor_'],['../classFoam_1_1fvMeshDistributors_1_1distributorRollingMPI.html#a87842e2c7b0543b41a13428f3581b326',1,'Foam::fvMeshDistributors::distributorRollingMPI::distributor_']]],
+  ['dumplevel_5f_2',['dumplevel_',['../classFoam_1_1fvMeshTopoChangers_1_1multiFieldRefiner2D.html#a1abfe7104f3c198c6c16492614c46b7e',1,'Foam::fvMeshTopoChangers::multiFieldRefiner2D::dumpLevel_'],['../classFoam_1_1fvMeshTopoChangers_1_1refiner2D.html#a2c4809f2cfed439080784d9480def04e',1,'Foam::fvMeshTopoChangers::refiner2D::dumpLevel_'],['../classFoam_1_1fvMeshTopoChangers_1_1multiFieldRefiner3D.html#a846f8892d44d17ae089cc267a89e69f0',1,'Foam::fvMeshTopoChangers::multiFieldRefiner3D::dumpLevel_']]]
+];

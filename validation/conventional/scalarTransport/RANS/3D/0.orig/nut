@@ -1,0 +1,67 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  10
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    format      ascii;
+    class       volScalarField;
+    location    "0";
+    object      nut;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [0 2 -1 0 0 0 0];
+
+internalField   uniform 0.00038;
+
+boundaryField
+{
+    #includeEtc "caseDicts/setConstraintTypes"
+
+    crossflow
+    {
+        type            calculated;
+        value           $internalField;
+    }
+    jet
+    {
+        type            calculated;
+        value           $internalField;
+    }
+    outlet
+    {
+        type            calculated;
+        value           $internalField;
+    }
+    front
+    {
+        type            nutFunction;
+        value           nutValue;
+    }
+    back
+    {
+        type            nutFunction;
+        value           nutValue;
+    }
+    bottom
+    {
+        type            nutFunction;
+        value           nutValue;
+    }
+    top
+    {
+        type            nutFunction;
+        value           nutValue;
+    }
+    pipe
+    {
+        type            nutFunction;
+        value           nutValue;
+    }
+}
+
+// ************************************************************************* //

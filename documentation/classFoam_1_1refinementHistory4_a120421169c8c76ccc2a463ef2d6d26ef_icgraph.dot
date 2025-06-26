@@ -1,0 +1,13 @@
+digraph "Foam::refinementHistory4::topoChange"
+{
+ // LATEX_PDF_SIZE
+  bgcolor="transparent";
+  edge [fontname=Helvetica,fontsize=10,labelfontname=Helvetica,labelfontsize=10];
+  node [fontname=Helvetica,fontsize=10,shape=box,height=0.2,width=0.4];
+  rankdir="RL";
+  Node1 [id="Node000001",label="Foam::refinementHistory4\l::topoChange",height=0.2,width=0.4,color="gray40", fillcolor="grey60", style="filled", fontcolor="black",tooltip=" "];
+  Node1 -> Node2 [id="edge1_Node000001_Node000002",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node2 [id="Node000002",label="Foam::fvMeshTopoChangers\l::multiFieldRefiner2D::\ltopoChange",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$classFoam_1_1fvMeshTopoChangers_1_1multiFieldRefiner2D.html#a85b5f4a19786dd04d0560dab43c8b679",tooltip=" "];
+  Node1 -> Node3 [id="edge2_Node000001_Node000003",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node3 [id="Node000003",label="Foam::fvMeshTopoChangers\l::refiner2D::topoChange",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$classFoam_1_1fvMeshTopoChangers_1_1refiner2D.html#abed3eed555cdd23306f8a836ee56a4df",tooltip=" "];
+}

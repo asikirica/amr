@@ -1,0 +1,11 @@
+<map id="Foam::refinementHistory4::markCommonCells" name="Foam::refinementHistory4::markCommonCells">
+<area shape="rect" id="Node000001" title=" " alt="" coords="477,39,651,79"/>
+<area shape="rect" id="Node000002" href="$classFoam_1_1refinementHistory4.html#a1cea1588a4ec11ca25e3298d400c2eb1" title=" " alt="" coords="227,15,429,41"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="463,48,426,43,426,38,464,43"/>
+<area shape="rect" id="Node000004" href="$classFoam_1_1refinementHistory4.html#ac46b7ce994f28194874ad4bb351d9f43" title=" " alt="" coords="241,67,415,107"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="464,73,415,79,415,74,463,68"/>
+<area shape="rect" id="Node000003" href="$classFoam_1_1refinementHistory4Constraint.html#a33c85e79ae6300e7f9578188d3f356e2" title=" " alt="" coords="5,5,179,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="213,29,179,29,179,24,213,24"/>
+<area shape="rect" id="Node000005" href="$classFoam_1_1refinementHistory4Constraint.html#a400ed17f26d19e2729516ac3154bf736" title=" " alt="" coords="5,69,179,109"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="228,90,179,91,179,86,228,85"/>
+</map>

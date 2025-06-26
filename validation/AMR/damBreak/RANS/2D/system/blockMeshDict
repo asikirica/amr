@@ -1,0 +1,179 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  10
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      blockMeshDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+convertToMeters	1;
+
+cells			100;
+
+xmin			0;
+ymin			0;
+zmin			0;
+
+x1				0.6635;
+x2				0.161;
+x3				2.3955;
+
+y				0.1;
+
+z1				0.161;
+z2				0.839;
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+x1Cells		#calc "round($cells * ($x1 / ($x1 + $x2 + $x3)) * (($x1 + $x2 + $x3) / ($z1 + $z2)) )";
+x2Cells		#calc "round($cells * ($x2 / ($x1 + $x2 + $x3)) * (($x1 + $x2 + $x3) / ($z1 + $z2)) )";
+x3Cells		#calc "round($cells * ($x3 / ($x1 + $x2 + $x3)) * (($x1 + $x2 + $x3) / ($z1 + $z2)) )";
+
+yCells		1;
+
+z1Cells		#calc "round($cells * ($z1 / ($z1 + $z2)) )";
+z2Cells		#calc "round($cells * ($z2 / ($z1 + $z2)) )";
+
+vertices
+(
+	//BLOCK1
+    ($xmin  							$ymin					$zmin)									//0
+    (#calc "$xmin + $x1"				$ymin					$zmin)									//1
+    (#calc "$xmin + $x1"				#calc "$ymin + $y"		$zmin)									//2
+    ($xmin								#calc "$ymin + $y"		$zmin)									//3
+    ($xmin  							$ymin					#calc "$zmin + $z1")					//4
+    (#calc "$xmin + $x1"				$ymin					#calc "$zmin + $z1")					//5
+    (#calc "$xmin + $x1"				#calc "$ymin + $y"		#calc "$zmin + $z1")					//6
+    ($xmin								#calc "$ymin + $y"		#calc "$zmin + $z1")					//7
+
+	//BLOCK2
+    (#calc "$xmin + $x1 + $x2"			$ymin					$zmin)									//8
+    (#calc "$xmin + $x1 + $x2 + $x3"	$ymin					$zmin)									//9
+    (#calc "$xmin + $x1 + $x2 + $x3"	#calc "$ymin + $y"		$zmin)									//10
+    (#calc "$xmin + $x1 + $x2"			#calc "$ymin + $y"		$zmin)									//11
+    (#calc "$xmin + $x1 + $x2"			$ymin					#calc "$zmin + $z1")					//12
+    (#calc "$xmin + $x1 + $x2 + $x3"	$ymin					#calc "$zmin + $z1")					//13
+    (#calc "$xmin + $x1 + $x2 + $x3"	#calc "$ymin + $y"		#calc "$zmin + $z1")					//14
+    (#calc "$xmin + $x1 + $x2"			#calc "$ymin + $y"		#calc "$zmin + $z1")					//15
+
+	//BLOCK3
+    //4
+    //5
+    //6
+    //7
+    ($xmin  							$ymin					#calc "$zmin + $z1 + $z2")				//16
+    (#calc "$xmin + $x1"				$ymin					#calc "$zmin + $z1 + $z2")				//17
+    (#calc "$xmin + $x1"				#calc "$ymin + $y"		#calc "$zmin + $z1 + $z2")				//18
+    ($xmin								#calc "$ymin + $y"		#calc "$zmin + $z1 + $z2")				//19
+
+	//BLOCK4
+    //5
+    //12
+    //15
+    //6
+    //17
+    (#calc "$xmin + $x1 + $x2"			$ymin					#calc "$zmin + $z1 + $z2")				//20
+    (#calc "$xmin + $x1 + $x2"			#calc "$ymin + $y"		#calc "$zmin + $z1 + $z2")				//21
+    //18
+
+	//BLOCK5
+    //12
+    //13
+    //14
+    //15
+    //20
+    (#calc "$xmin + $x1 + $x2 + $x3"	$ymin					#calc "$zmin + $z1 + $z2")				//22
+    (#calc "$xmin + $x1 + $x2 + $x3"	#calc "$ymin + $y"		#calc "$zmin + $z1 + $z2")				//23
+	//21
+);
+
+blocks
+(
+    hex (0 1 2 3 4 5 6 7)			($x1Cells $yCells $z1Cells)	simpleGrading (1 1 1)
+    hex (8 9 10 11 12 13 14 15)		($x3Cells $yCells $z1Cells)	simpleGrading (1 1 1)
+
+    hex (4 5 6 7 16 17 18 19)		($x1Cells $yCells $z2Cells)	simpleGrading (1 1 1)
+    hex (5 12 15 6 17 20 21 18)		($x2Cells $yCells $z2Cells)	simpleGrading (1 1 1)
+    hex (12 13 14 15 20 22 23 21)	($x3Cells $yCells $z2Cells)	simpleGrading (1 1 1)
+);
+
+boundary
+(
+    walls
+    {
+        type wall;
+        faces
+        (
+            (9 10 14 13)
+            (13 14 23 22)
+			(0 3 7 4)
+			(4 7 19 16)
+        );
+    }
+
+    emptyWalls
+    {
+        type empty;
+        faces
+        (
+            (0 1 5 4)
+			(8 9 13 12)
+            (4 5 17 16)
+            (5 12 20 17)
+            (12 13 22 20)
+            (11 10 14 15)
+            (3 2 6 7)
+            (15 14 23 21)
+            (6 15 21 18)
+            (7 6 18 19)
+        );
+    }
+
+    bottom
+    {
+        type wall;
+        faces
+        (
+            (0 1 2 3)
+            (8 9 10 11)
+        );
+    }
+
+    top
+    {
+        type patch;
+        faces
+        (
+            (16 17 18 19)
+            (17 20 21 18)
+            (20 22 23 21)
+        );
+    }
+
+    object
+    {
+        type wall;
+        faces
+        (
+            (1 2 6 5)
+			(5 12 15 6)
+            (8 11 15 12)
+        );
+    }
+
+    internal
+    {
+        type internal;
+        faces ();
+    }
+);
+
+// ************************************************************************* //

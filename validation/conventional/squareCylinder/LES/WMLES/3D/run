@@ -1,0 +1,56 @@
+#!/bin/bash
+#SBATCH --job-name=validation
+#SBATCH --output=validation_log.out
+#SBATCH --time=192:00:00
+#SBATCH --nodes=5
+#SBATCH --ntasks-per-node=24
+#SBATCH --mem=50G
+#SBATCH --partition=computes_thin
+#SBATCH --exclusive
+
+# setup
+CPU=$SLURM_NTASKS
+SOLVER=pimpleFoam
+
+# prepare
+blockMesh > log.blockMesh 2>&1
+
+# map
+mapFields ../coarse3D -noFunctionObjects -mapMethod cellPointInterpolate -sourceTime latestTime > log.mapFields 2>&1
+
+# set time
+sed -i "s/endTime.*[0-9][0-9]*;/endTime 15.3271;/g" system/controlDict
+
+# decompose
+sed -i "s/numberOfSubdomains.*[0-9][0-9]*;/numberOfSubdomains $CPU;/g" system/decomposeParDict
+decomposePar > log.decomposePar 2>&1
+
+# run
+mpirun -np $CPU $SOLVER -parallel > log.$SOLVER 2>&1
+
+# reconstruct
+reconstructPar -latestTime > log.reconstructPar 2>&1
+
+# delete
+rm -rf processor*
+rm -rf 15.*/uniform
+rm -rf 15.*/phi
+rm -rf 15.*/phi_0
+rm -rf 15.*/pMean
+rm -rf 15.*/pPrime2Mean
+rm -rf 15.*/U_0
+rm -rf 15.*/UMean
+rm -rf 15.*/UPrime2Mean
+
+# set time
+sed -i "s/endTime.*[0-9][0-9]*;/endTime 45.98131;/g" system/controlDict
+
+# decompose
+sed -i "s/numberOfSubdomains.*[0-9][0-9]*;/numberOfSubdomains $CPU;/g" system/decomposeParDict
+decomposePar > log.decomposePar 2>&1
+
+# run
+mpirun -np $CPU $SOLVER -parallel > log.$SOLVER 2>&1
+
+# reconstruct
+reconstructPar -latestTime > log.reconstructPar 2>&1

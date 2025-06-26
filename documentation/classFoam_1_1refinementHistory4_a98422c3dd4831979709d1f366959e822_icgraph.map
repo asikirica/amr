@@ -1,0 +1,13 @@
+<map id="Foam::refinementHistory4::visibleCells" name="Foam::refinementHistory4::visibleCells">
+<area shape="rect" id="Node000001" title=" " alt="" coords="321,73,495,113"/>
+<area shape="rect" id="Node000002" href="$classFoam_1_1hexRef4.html#aa7678ed5c6c3f67cc6439d0389ef0551" title=" " alt="" coords="104,5,273,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="343,70,272,45,236,33,238,28,274,39,345,65"/>
+<area shape="rect" id="Node000003" href="$classFoam_1_1hexRef4.html#a424b6af893ef48723f9fcd320707eb73" title=" " alt="" coords="104,55,273,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="307,84,273,80,274,74,308,78"/>
+<area shape="rect" id="Node000004" href="$reconstructParMesh2D_8C.html#aca1b4d7e38cdc9ee10c0302dd3fdac27" title=" " alt="" coords="111,104,266,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="308,106,267,111,266,106,307,101"/>
+<area shape="rect" id="Node000006" href="$decomposeParMesh2D_8C.html#a0ddf1224851353fc92bfbff6f499fa97" title=" " alt="" coords="163,153,214,179"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="341,120,274,143,215,162,213,156,272,138,339,115"/>
+<area shape="rect" id="Node000005" href="$reconstructParMesh2D_8C.html#a0ddf1224851353fc92bfbff6f499fa97" title=" " alt="" coords="5,104,56,129"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="98,119,56,119,56,114,98,114"/>
+</map>

@@ -1,0 +1,32 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  10
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+height
+{
+	center			0.05;
+
+	type            interfaceHeight;
+	libs            ("libfieldFunctionObjects.so");
+
+	writeControl    runTime;
+	writeInterval   0.01;
+
+	alpha           alpha.water;
+
+	locations
+	(
+		(0.496	$center	0) // H1
+		(0.992	$center	0) // H2
+		(1.488	$center	0) // H3
+		(2.638	$center	0) // H4
+	);
+}
+
+// ************************************************************************* //

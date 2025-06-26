@@ -1,0 +1,106 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  10
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      blockMeshDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+convertToMeters	1;
+
+cells			100;
+
+xmin			0;
+ymin			0;
+zmin			0;
+
+x				1.0;
+
+y				2.0;
+
+z				0.1;
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+xCells		#calc "round($cells * $x)";
+
+yCells		#calc "round($cells * $y)";
+
+zCells		1;
+
+
+vertices
+(
+	//BLOCK1
+	(#calc "$xmin - 0.5 * $x"			$ymin					$zmin)									//0
+    (#calc "$xmin + 0.5 * $x"			$ymin					$zmin)									//1
+    (#calc "$xmin + 0.5 * $x"			#calc "$ymin + $y"		$zmin)									//2
+    (#calc "$xmin - 0.5 * $x"			#calc "$ymin + $y"		$zmin)									//3
+    (#calc "$xmin - 0.5 * $x"			$ymin					#calc "$zmin + $z")						//4
+    (#calc "$xmin + 0.5 * $x"			$ymin					#calc "$zmin + $z")						//5
+    (#calc "$xmin + 0.5 * $x"			#calc "$ymin + $y"		#calc "$zmin + $z")						//6
+    (#calc "$xmin - 0.5 * $x"			#calc "$ymin + $y"		#calc "$zmin + $z")						//7
+);
+
+blocks
+(
+    hex (0 1 2 3 4 5 6 7)	($xCells $yCells $zCells)	simpleGrading (1 1 1)
+);
+
+boundary
+(
+    walls
+    {
+        type wall;
+        faces
+        (
+			(0 4 7 3)
+			(2 6 5 1)
+        );
+    }
+
+    emptyWalls
+    {
+        type empty;
+        faces
+        (
+			(4 5 6 7)
+			(0 3 2 1)
+        );
+    }
+
+    bottom
+    {
+        type wall;
+        faces
+        (
+			(1 5 4 0)
+        );
+    }
+
+    top
+    {
+        type wall;
+        faces
+        (
+			(3 7 6 2)
+        );
+    }
+
+
+    internal
+    {
+        type internal;
+        faces ();
+    }
+);
+
+// ************************************************************************* //

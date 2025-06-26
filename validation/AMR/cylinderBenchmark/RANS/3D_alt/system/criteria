@@ -1,0 +1,133 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  10
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+criteria
+{
+	type			coded;
+	libs			("libutilityFunctionObjects.so");
+
+	name			criteria;
+
+	writeControl	adjustableRunTime;
+	writeInterval	0.01;
+
+	codeExecute
+	#{
+		// lookup fields and values
+		const volVectorField& U = mesh().lookupObject<volVectorField>("U");
+		const scalar activationTime = 0.1;
+		const scalar filter = 2.0;
+		const scalar cutoffValue = 1e-5;
+		dimensionedScalar D("D", dimLength, 0.1);
+		dimensionedScalar Um("Um", dimVelocity, 2.25);
+
+
+		// helper function
+		auto smoothField = [&](const volScalarField& field) -> volScalarField
+		{
+			const scalar sigma = filter * pow((Foam::sum(mesh().V()).value()) / mesh().nCells(), 1.0/3.0);
+			volScalarField result = field;
+
+			forAll(field, celli)
+			{
+				scalar sum = field[celli];
+				scalar weights = 1.0;
+				
+				const auto& neighbors = mesh().cellCells()[celli];
+				const auto& centers = mesh().cellCentres();
+				
+				forAll(neighbors, i)
+				{
+					const scalar d = mag(centers[celli] - centers[neighbors[i]]);
+					const scalar w = exp(-d * d / (2.0 * sigma * sigma));
+					sum += w * field[neighbors[i]];
+					weights += w;
+				}
+				
+				result[celli] = sum/weights;
+			}
+			return result;
+		};
+
+
+		// normalized vorticity field
+		if (!mesh().foundObject<volScalarField>("normalizedVorticity"))
+		{
+			autoPtr<volScalarField> normalizedVorticityPtr_
+			(
+				new volScalarField
+				(
+					IOobject
+					(
+						"normalizedVorticity",
+						mesh().time().timeName(),
+						mesh(),
+						IOobject::NO_READ,
+						IOobject::AUTO_WRITE
+					),
+					mesh(),
+					dimensionedScalar("normalizedVorticity", dimless, cutoffValue)
+				)
+			);
+			mesh().objectRegistry::store(normalizedVorticityPtr_);
+		}
+
+		// normalized velocity gradient magnitude field
+		if (!mesh().foundObject<volScalarField>("normalizedMagGradU"))
+		{
+			autoPtr<volScalarField> normalizedMagGradUPtr_
+			(
+				new volScalarField
+				(
+					IOobject
+					(
+						"normalizedMagGradU",
+						mesh().time().timeName(),
+						mesh(),
+						IOobject::NO_READ,
+						IOobject::AUTO_WRITE
+					),
+					mesh(),
+					dimensionedScalar("normalizedMagGradU", dimless, cutoffValue)
+				)
+			);
+			mesh().objectRegistry::store(normalizedMagGradUPtr_);
+		}
+
+
+		// lookup normalized vorticity field
+		volScalarField& normalizedVorticity = 
+			const_cast<volScalarField&>
+			(
+				mesh().lookupObject<volScalarField>("normalizedVorticity")
+			);
+
+		// lookup normalized velocity gradient magnitude field
+		volScalarField& normalizedMagGradU = 
+			const_cast<volScalarField&>
+			(
+				mesh().lookupObject<volScalarField>("normalizedMagGradU")
+			);
+
+
+		if (mesh().time().value() > activationTime)
+		{
+			volScalarField dimlessVorticity = mag(fvc::curl(U)) / (Um / D);
+			normalizedVorticity = (smoothField(dimlessVorticity) + cutoffValue) / 
+				max(gMax(smoothField(dimlessVorticity).primitiveField()) + cutoffValue, cutoffValue);
+
+			volScalarField dimlessMagGradU = mag(fvc::grad(U)) / (Um / D);
+			normalizedMagGradU = (smoothField(dimlessMagGradU) + cutoffValue) / 
+				max(gMax(smoothField(dimlessMagGradU).primitiveField()) + cutoffValue, cutoffValue);
+		}
+	#};
+}
+
+// ************************************************************************* //

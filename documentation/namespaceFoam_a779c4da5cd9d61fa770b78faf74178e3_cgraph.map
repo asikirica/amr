@@ -1,0 +1,11 @@
+<map id="Foam::getMPIStats" name="Foam::getMPIStats">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,80,141,105"/>
+<area shape="rect" id="Node000002" href="$namespaceFoam.html#a062bf82f84bf3078fa2eb1835777c33f" title=" " alt="" coords="203,5,357,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="100,77,188,40,212,32,213,37,190,44,102,82"/>
+<area shape="rect" id="Node000003" href="$namespaceFoam.html#a417291a4c78876a1f80a6b6a2aad4634" title=" " alt="" coords="189,55,371,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="141,82,175,77,176,83,142,87"/>
+<area shape="rect" id="Node000004" href="$namespaceFoam.html#a08d408856c805b0bb4446710726e009e" title=" " alt="" coords="218,104,342,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="142,98,205,105,204,111,141,103"/>
+<area shape="rect" id="Node000005" href="$namespaceFoam.html#a06c8001bcbc4685dfaac232b1dee6646" title=" " alt="" coords="205,153,355,179"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="104,103,190,138,217,147,216,152,188,143,102,108"/>
+</map>

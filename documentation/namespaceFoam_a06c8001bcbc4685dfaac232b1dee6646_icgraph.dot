@@ -1,0 +1,15 @@
+digraph "Foam::rankWaitTimes"
+{
+ // LATEX_PDF_SIZE
+  bgcolor="transparent";
+  edge [fontname=Helvetica,fontsize=10,labelfontname=Helvetica,labelfontsize=10];
+  node [fontname=Helvetica,fontsize=10,shape=box,height=0.2,width=0.4];
+  rankdir="RL";
+  Node1 [id="Node000001",label="Foam::rankWaitTimes",height=0.2,width=0.4,color="gray40", fillcolor="grey60", style="filled", fontcolor="black",tooltip=" "];
+  Node1 -> Node2 [id="edge1_Node000001_Node000002",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node2 [id="Node000002",label="Foam::getMPIStats",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$namespaceFoam.html#a779c4da5cd9d61fa770b78faf74178e3",tooltip=" "];
+  Node2 -> Node3 [id="edge2_Node000002_Node000003",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node3 [id="Node000003",label="Foam::fvMeshDistributors\l::distributorMPI::update",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$classFoam_1_1fvMeshDistributors_1_1distributorMPI.html#aab5532f5814163b23354e6c1c0137042",tooltip=" "];
+  Node2 -> Node4 [id="edge3_Node000002_Node000004",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node4 [id="Node000004",label="Foam::fvMeshDistributors\l::distributorRollingMPI\l::update",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$classFoam_1_1fvMeshDistributors_1_1distributorRollingMPI.html#ab521a5007aa7d5325e6ecd905cea25a0",tooltip=" "];
+}

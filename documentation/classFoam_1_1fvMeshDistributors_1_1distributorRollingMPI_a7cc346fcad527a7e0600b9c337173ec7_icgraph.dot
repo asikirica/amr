@@ -1,0 +1,11 @@
+digraph "Foam::fvMeshDistributors::distributorRollingMPI::readDict"
+{
+ // LATEX_PDF_SIZE
+  bgcolor="transparent";
+  edge [fontname=Helvetica,fontsize=10,labelfontname=Helvetica,labelfontsize=10];
+  node [fontname=Helvetica,fontsize=10,shape=box,height=0.2,width=0.4];
+  rankdir="RL";
+  Node1 [id="Node000001",label="Foam::fvMeshDistributors\l::distributorRollingMPI\l::readDict",height=0.2,width=0.4,color="gray40", fillcolor="grey60", style="filled", fontcolor="black",tooltip=" "];
+  Node1 -> Node2 [id="edge1_Node000001_Node000002",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node2 [id="Node000002",label="Foam::fvMeshDistributors\l::distributorRollingMPI\l::distributorRollingMPI",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$classFoam_1_1fvMeshDistributors_1_1distributorRollingMPI.html#a7d7a4da73f66be93d3329fa7f126944e",tooltip=" "];
+}

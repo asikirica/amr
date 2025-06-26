@@ -1,0 +1,27 @@
+var searchData=
+[
+  ['calculateprotectedcells_0',['calculateprotectedcells',['../classFoam_1_1fvMeshTopoChangers_1_1refiner2D.html#a1e2cf2a20ac14bc646111e4a6a1cf7f5',1,'Foam::fvMeshTopoChangers::refiner2D::calculateProtectedCells()'],['../classFoam_1_1fvMeshTopoChangers_1_1multiFieldRefiner3D.html#af3752c9763322bfe123760142d9b6367',1,'Foam::fvMeshTopoChangers::multiFieldRefiner3D::calculateProtectedCells()'],['../classFoam_1_1fvMeshTopoChangers_1_1multiFieldRefiner2D.html#a23a5912b25455d2fde4c1610a270e72b',1,'Foam::fvMeshTopoChangers::multiFieldRefiner2D::calculateProtectedCells()']]],
+  ['celllevel_1',['cellLevel',['../classFoam_1_1hexRef4.html#a2c3c5ae0133bd4d47643ff0d576bce8c',1,'Foam::hexRef4']]],
+  ['cellshapes_2',['cellShapes',['../classFoam_1_1hexRef4.html#a4b96f227cef04032417a79513b4a4384',1,'Foam::hexRef4']]],
+  ['checkboundaryorientation_3',['checkBoundaryOrientation',['../classFoam_1_1hexRef4.html#a3f1e2a195927f71736c3befe20e25af0',1,'Foam::hexRef4']]],
+  ['checkeightanchorpoints_4',['checkeightanchorpoints',['../classFoam_1_1fvMeshTopoChangers_1_1multiFieldRefiner2D.html#a6ff23b7efbcdff14dfeb6898e3358187',1,'Foam::fvMeshTopoChangers::multiFieldRefiner2D::checkEightAnchorPoints()'],['../classFoam_1_1fvMeshTopoChangers_1_1refiner2D.html#a942d6cafe3e60416e1790d3fec3772a2',1,'Foam::fvMeshTopoChangers::refiner2D::checkEightAnchorPoints()'],['../classFoam_1_1fvMeshTopoChangers_1_1multiFieldRefiner3D.html#a4a3a8119446721f91c7068d0097fbc68',1,'Foam::fvMeshTopoChangers::multiFieldRefiner3D::checkEightAnchorPoints()']]],
+  ['checkindices_5',['checkIndices',['../classFoam_1_1refinementHistory4.html#a1d95f362c51759b0472b6ef28bbb2480',1,'Foam::refinementHistory4']]],
+  ['checkinternalorientation_6',['checkInternalOrientation',['../classFoam_1_1hexRef4.html#a5ae781b5887e8044a13e35cfb1f28608',1,'Foam::hexRef4']]],
+  ['checkmesh_7',['checkMesh',['../classFoam_1_1hexRef4.html#acaa1d0f209f7bca9cdeb1afadb37e98b',1,'Foam::hexRef4']]],
+  ['checkrefinementlevels_8',['checkRefinementLevels',['../classFoam_1_1hexRef4.html#a9841e45399611502be4a293dc87ee672',1,'Foam::hexRef4']]],
+  ['checkwantedrefinementlevels_9',['checkWantedRefinementLevels',['../classFoam_1_1hexRef4.html#afc7bac4760aa2f236c5f5747f1097811',1,'Foam::hexRef4']]],
+  ['classname_10',['ClassName',['../classFoam_1_1hexRef4.html#a143a481cf96405ac85958f9d625b790a',1,'Foam::hexRef4']]],
+  ['clone_11',['clone',['../classFoam_1_1refinementHistory4.html#a1989d308d72477c607e360b69b5e39c7',1,'Foam::refinementHistory4::clone(const IOobject &amp;io, const labelList &amp;cellMap) const'],['../classFoam_1_1refinementHistory4.html#a192e4afe5e2deded01153de0aba0dfcc',1,'Foam::refinementHistory4::clone(const IOobject &amp;io, const labelList &amp;decomposition, const labelList &amp;splitCellProc, const labelList &amp;splitCellNum, const label procI, labelList &amp;oldToNewSplit) const']]],
+  ['collectlevelpoints_12',['collectlevelpoints',['../classFoam_1_1hexRef4.html#a7a947763624b76228f63ea9c31237bb3',1,'Foam::hexRef4::collectLevelPoints(const labelList &amp;f, const label level, DynamicList&lt; label &gt; &amp;points) const'],['../classFoam_1_1hexRef4.html#a434d454bb85d1364e81bb8fe65b918d1',1,'Foam::hexRef4::collectLevelPoints(const labelList &amp;meshPoints, const labelList &amp;f, const label level, DynamicList&lt; label &gt; &amp;points) const']]],
+  ['combinecells_13',['combineCells',['../classFoam_1_1refinementHistory4.html#a71f84c9fb6ef787691acb17cbe01f98e',1,'Foam::refinementHistory4']]],
+  ['compact_14',['compact',['../classFoam_1_1refinementHistory4.html#a58c3ec382eabbd0ff5a42f974fdd4b31',1,'Foam::refinementHistory4']]],
+  ['consistentrefinement_15',['consistentRefinement',['../classFoam_1_1hexRef4.html#a8006cb067a1a98d23e44fe812b37a39a',1,'Foam::hexRef4']]],
+  ['consistentslowrefinement_16',['consistentSlowRefinement',['../classFoam_1_1hexRef4.html#ac6fe6d02a02061de934f85e69f089031',1,'Foam::hexRef4']]],
+  ['consistentslowrefinement2_17',['consistentSlowRefinement2',['../classFoam_1_1hexRef4.html#aa7bc9691b88db8a9578581c6849df396',1,'Foam::hexRef4']]],
+  ['consistentunrefinement_18',['consistentUnrefinement',['../classFoam_1_1hexRef4.html#a4fc9c3b099b453421a4fe8a1375f6e11',1,'Foam::hexRef4']]],
+  ['count_19',['count',['../classFoam_1_1fvMeshTopoChangers_1_1multiFieldRefiner2D.html#a6e2f89389c55fd218f072b104642af8b',1,'Foam::fvMeshTopoChangers::multiFieldRefiner2D::count()'],['../classFoam_1_1fvMeshTopoChangers_1_1refiner2D.html#ab6adedbc45fb655ab9acfad50c4b73c0',1,'Foam::fvMeshTopoChangers::refiner2D::count()'],['../classFoam_1_1fvMeshTopoChangers_1_1multiFieldRefiner3D.html#adb396c8c23a0d4803cbec03b354438d0',1,'Foam::fvMeshTopoChangers::multiFieldRefiner3D::count()']]],
+  ['countanchors_20',['countAnchors',['../classFoam_1_1hexRef4.html#af908d9468e4ea17443078a3b524bd516',1,'Foam::hexRef4']]],
+  ['countproc_21',['countProc',['../classFoam_1_1refinementHistory4.html#a6e3c6bd85287ebaba2724eb2e972c4ff',1,'Foam::refinementHistory4']]],
+  ['createinternalfaces_22',['createInternalFaces',['../classFoam_1_1hexRef4.html#a3a57967ded24e4e25cc2e99cdbbadb97',1,'Foam::hexRef4']]],
+  ['createinternalfromsplitface_23',['createInternalFromSplitFace',['../classFoam_1_1hexRef4.html#a2365bf282707b060b14b9bde61661b85',1,'Foam::hexRef4']]]
+];

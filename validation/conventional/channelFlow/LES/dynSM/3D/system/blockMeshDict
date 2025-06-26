@@ -1,0 +1,139 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  10
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      blockMeshDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+convertToMeters	1;
+
+cells			10;
+bl              0.0015;
+
+xmin			0;
+ymin			0;
+zmin			0;
+
+x				#calc "20.0 * constant::mathematical::pi";
+y				1.0;
+z				#calc "1.0 * constant::mathematical::pi";
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+xCells			#calc "round($cells * $x / $y / 4.0)";
+
+yCells			#calc "round($cells * $y / $y)";
+
+zCells			#calc "round($cells * $z / $y)";
+
+hRef			#calc "$y / $yCells / $bl";
+lRef			#calc "1.0 / $hRef";
+
+vertices
+(
+	//BLOCK1-2
+	($xmin			$ymin						$zmin)
+    (#calc "$xmin + $x"	$ymin						$zmin)
+    ($xmin			#calc "$ymin + $y"			$zmin)
+    (#calc "$xmin + $x"	#calc "$ymin + $y"			$zmin)
+    ($xmin			#calc "$ymin + 2.0 * $y"	$zmin)
+    (#calc "$xmin + $x"	#calc "$ymin + 2.0 * $y"	$zmin)
+    ($xmin			$ymin						#calc "$zmin + $z")
+    (#calc "$xmin + $x"	$ymin						#calc "$zmin + $z")
+    ($xmin			#calc "$ymin + $y"			#calc "$zmin + $z")
+    (#calc "$xmin + $x"	#calc "$ymin + $y"			#calc "$zmin + $z")
+    ($xmin			#calc "$ymin + 2.0 * $y"	#calc "$zmin + $z")
+    (#calc "$xmin + $x"	#calc "$ymin + 2.0 * $y"	#calc "$zmin + $z")
+);
+
+blocks
+(
+    hex (0 1 3 2 6 7 9 8)		($xCells $yCells $zCells)	simpleGrading	(1 $hRef 1)
+    hex (2 3 5 4 8 9 11 10)		($xCells $yCells $zCells)	simpleGrading	(1 $lRef 1)
+);
+
+edges
+(
+);
+
+boundary
+(
+	inlet
+	{
+		type cyclic;
+		neighbourPatch outlet;
+		faces
+		(
+			(0 6 8 2)
+			(2 8 10 4)
+		);
+    }
+
+    outlet
+    {
+        type cyclic;
+        neighbourPatch inlet;
+        faces
+		(
+			(1 3 9 7)
+			(3 5 11 9)
+		);
+    }
+
+    bottom
+    {
+        type wall;
+        faces
+		(
+			(0 1 7 6)
+		);
+    }
+
+    top
+    {
+        type wall;
+        faces
+		(
+			(4 10 11 5)
+		);
+    }
+
+    front
+    {
+        type cyclic;
+        neighbourPatch back;
+        faces
+		(
+			(0 2 3 1)
+			(2 4 5 3)
+		);
+    }
+
+    back
+    {
+        type cyclic;
+        neighbourPatch front;
+        faces
+		(
+			(6 7 9 8)
+			(8 9 11 10)
+		);
+    }
+
+    internal
+    {
+        type internal;
+        faces ();
+    }
+);
+
+// ************************************************************************* //

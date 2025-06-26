@@ -1,0 +1,15 @@
+#!/bin/bash
+
+# grids
+case=30
+
+
+# case
+cp -rf 2D case2D
+cd case2D
+chmod +x clean
+chmod +x run
+sed -i "s/cells.*[0-9][0-9]*;/cells $case;/g" system/blockMeshDict
+./clean
+sbatch run
+cd ..

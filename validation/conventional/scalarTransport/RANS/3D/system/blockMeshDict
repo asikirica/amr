@@ -1,0 +1,486 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  10
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      blockMeshDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+convertToMeters	1;
+
+cells			10;
+ogridCells		1;
+
+hRef			1;
+lRef			1;
+
+D				0.008;
+ogrid			0.001;
+
+xmin			0;
+ymin			0;
+zmin			0;
+
+r				#calc "0.5 * $D";
+ri				#calc "$r - $ogrid";
+riO				#calc "0.925 * $ri";
+
+x1				#calc "0.100 - $r";
+x2				#calc "0.200 - $r";
+
+y				#calc "0.054 - $r";
+
+z1				0.150;
+z2				0.108;
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+x1Cells			#calc "round($cells * $x1 / $D)";
+x2Cells			#calc "round($cells * $x2 / $D)";
+
+yCells			#calc "round($cells * $y / $D)";
+
+z1Cells			#calc "round( 2 * ($cells - 1 + $ogridCells) * $z1 / $D )";
+z2Cells			#calc "round($cells * $z2 / $D)";
+
+throatCells		#calc "round($cells - 1)";
+
+vertices
+(
+	//BLOCK1-12
+	//external vertices
+	(#calc "$xmin + $r * cos(degToRad(0))"			#calc "$ymin + $r * sin(degToRad(0))"			$zmin)						//0
+	(#calc "$xmin + $r * cos(degToRad(45))"			#calc "$ymin + $r * sin(degToRad(45))"			$zmin)						//1
+	(#calc "$xmin + $r * cos(degToRad(90))"			#calc "$ymin + $r * sin(degToRad(90))"			$zmin)						//2
+	(#calc "$xmin + $r * cos(degToRad(135))"		#calc "$ymin + $r * sin(degToRad(135))"			$zmin)						//3
+	(#calc "$xmin + $r * cos(degToRad(180))"		#calc "$ymin + $r * sin(degToRad(180))"			$zmin)						//4
+	(#calc "$xmin + $r * cos(degToRad(225))"		#calc "$ymin + $r * sin(degToRad(225))"			$zmin)						//5
+	(#calc "$xmin + $r * cos(degToRad(270))"		#calc "$ymin + $r * sin(degToRad(270))"			$zmin)						//6
+	(#calc "$xmin + $r * cos(degToRad(315))"		#calc "$ymin + $r * sin(degToRad(315))"			$zmin)						//7
+	//internal vertices
+	(#calc "$xmin + $ri * cos(degToRad(0))"			#calc "$ymin + $ri * sin(degToRad(0))"			$zmin)						//8
+	(#calc "$xmin + $ri * cos(degToRad(45))"		#calc "$ymin + $ri * sin(degToRad(45))"			$zmin)						//9
+	(#calc "$xmin + $ri * cos(degToRad(90))"		#calc "$ymin + $ri * sin(degToRad(90))"			$zmin)						//10
+	(#calc "$xmin + $ri * cos(degToRad(135))"		#calc "$ymin + $ri * sin(degToRad(135))"		$zmin)						//11
+	(#calc "$xmin + $ri * cos(degToRad(180))"		#calc "$ymin + $ri * sin(degToRad(180))"		$zmin)						//12
+	(#calc "$xmin + $ri * cos(degToRad(225))"		#calc "$ymin + $ri * sin(degToRad(225))"		$zmin)						//13
+	(#calc "$xmin + $ri * cos(degToRad(270))"		#calc "$ymin + $ri * sin(degToRad(270))"		$zmin)						//14
+	(#calc "$xmin + $ri * cos(degToRad(315))"		#calc "$ymin + $ri * sin(degToRad(315))"		$zmin)						//15
+	//external vertices
+	(#calc "$xmin + $r * cos(degToRad(0))"			#calc "$ymin + $r * sin(degToRad(0))"			#calc "$zmin - $z1")		//16
+	(#calc "$xmin + $r * cos(degToRad(45))"			#calc "$ymin + $r * sin(degToRad(45))"			#calc "$zmin - $z1")		//17
+	(#calc "$xmin + $r * cos(degToRad(90))"			#calc "$ymin + $r * sin(degToRad(90))"			#calc "$zmin - $z1")		//18
+	(#calc "$xmin + $r * cos(degToRad(135))"		#calc "$ymin + $r * sin(degToRad(135))"			#calc "$zmin - $z1")		//19
+	(#calc "$xmin + $r * cos(degToRad(180))"		#calc "$ymin + $r * sin(degToRad(180))"			#calc "$zmin - $z1")		//20
+	(#calc "$xmin + $r * cos(degToRad(225))"		#calc "$ymin + $r * sin(degToRad(225))"			#calc "$zmin - $z1")		//21
+	(#calc "$xmin + $r * cos(degToRad(270))"		#calc "$ymin + $r * sin(degToRad(270))"			#calc "$zmin - $z1")		//22
+	(#calc "$xmin + $r * cos(degToRad(315))"		#calc "$ymin + $r * sin(degToRad(315))"			#calc "$zmin - $z1")		//23
+	//internal vertices
+	(#calc "$xmin + $ri * cos(degToRad(0))"			#calc "$ymin + $ri * sin(degToRad(0))"			#calc "$zmin - $z1")		//24
+	(#calc "$xmin + $ri * cos(degToRad(45))"		#calc "$ymin + $ri * sin(degToRad(45))"			#calc "$zmin - $z1")		//25
+	(#calc "$xmin + $ri * cos(degToRad(90))"		#calc "$ymin + $ri * sin(degToRad(90))"			#calc "$zmin - $z1")		//26
+	(#calc "$xmin + $ri * cos(degToRad(135))"		#calc "$ymin + $ri * sin(degToRad(135))"		#calc "$zmin - $z1")		//27
+	(#calc "$xmin + $ri * cos(degToRad(180))"		#calc "$ymin + $ri * sin(degToRad(180))"		#calc "$zmin - $z1")		//28
+	(#calc "$xmin + $ri * cos(degToRad(225))"		#calc "$ymin + $ri * sin(degToRad(225))"		#calc "$zmin - $z1")		//29
+	(#calc "$xmin + $ri * cos(degToRad(270))"		#calc "$ymin + $ri * sin(degToRad(270))"		#calc "$zmin - $z1")		//30
+	(#calc "$xmin + $ri * cos(degToRad(315))"		#calc "$ymin + $ri * sin(degToRad(315))"		#calc "$zmin - $z1")		//31
+	//center line
+	($xmin											$ymin											$zmin)						//32
+	($xmin											$ymin											#calc "$zmin - $z1")		//33
+
+	//BLOCK13
+	//0
+	(#calc "$xmin + $r + $x2"						#calc "$ymin + $r * sin(degToRad(0))"			$zmin)						//34
+	(#calc "$xmin + $r + $x2"						#calc "$ymin + 2 * $r * sin(degToRad(45))"		$zmin)						//35
+	//1
+	(#calc "$xmin + 2 * $r * cos(degToRad(0))"		#calc "$ymin + 2 * $r * sin(degToRad(0))"		#calc "$zmin + $z2")		//36
+	(#calc "$xmin + $r + $x2"						#calc "$ymin + $r * sin(degToRad(0))"			#calc "$zmin + $z2")		//37
+	(#calc "$xmin + $r + $x2"						#calc "$ymin + 2 * $r * sin(degToRad(45))"		#calc "$zmin + $z2")		//38
+	(#calc "$xmin + 2 * $r * cos(degToRad(45))"		#calc "$ymin + 2 * $r * sin(degToRad(45))"		#calc "$zmin + $z2")		//39
+
+	//BLOCK14
+	//7
+	(#calc "$xmin + $r + $x2"						#calc "$ymin + 2 * $r * sin(degToRad(315))"		$zmin)						//40
+	//34
+	//0
+	(#calc "$xmin + 2 * $r * cos(degToRad(315))"	#calc "$ymin + 2 * $r * sin(degToRad(315))"		#calc "$zmin + $z2")		//41
+	(#calc "$xmin + $r + $x2"						#calc "$ymin + 2 * $r * sin(degToRad(315))"		#calc "$zmin + $z2")		//42
+	//37
+	//36
+
+	//BLOCK15
+	//3
+	//2
+	(#calc "$xmin + $r * cos(degToRad(90))"			#calc "$ymin + $r + $y"							$zmin)						//43
+	(#calc "$xmin + 2 * $r * cos(degToRad(135))"	#calc "$ymin + $r + $y"							$zmin)						//44
+	(#calc "$xmin + 2 * $r * cos(degToRad(135))"	#calc "$ymin + 2 * $r * sin(degToRad(135))"		#calc "$zmin + $z2")		//45
+	(#calc "$xmin + 2 * $r * cos(degToRad(90))"		#calc "$ymin + 2 * $r * sin(degToRad(90))"		#calc "$zmin + $z2")		//46
+	(#calc "$xmin + $r * cos(degToRad(90))"			#calc "$ymin + $r + $y"							#calc "$zmin + $z2")		//47
+	(#calc "$xmin + 2 * $r * cos(degToRad(135))"	#calc "$ymin + $r + $y"							#calc "$zmin + $z2")		//48
+
+	//BLOCK16
+	//2
+	//1
+	(#calc "$xmin + 2 * $r * cos(degToRad(45))"		#calc "$ymin + $r + $y"							$zmin)						//49
+	//43
+	//46
+	//39
+	(#calc "$xmin + 2 * $r * cos(degToRad(45))"		#calc "$ymin + $r + $y"							#calc "$zmin + $z2")		//50
+	//47
+
+	//BLOCK17
+	(#calc "$xmin - $r - $x1"						#calc "$ymin + 2 * $r * sin(degToRad(225))"		$zmin)						//51
+	//5
+	//4
+	(#calc "$xmin - $r - $x1"						#calc "$ymin + $r * sin(degToRad(180))"			$zmin)						//52
+	(#calc "$xmin - $r - $x1"						#calc "$ymin + 2 * $r * sin(degToRad(225))"		#calc "$zmin + $z2")		//53
+	(#calc "$xmin + 2 * $r * cos(degToRad(225))"	#calc "$ymin + 2 * $r * sin(degToRad(225))"		#calc "$zmin + $z2")		//54
+	(#calc "$xmin + 2 * $r * cos(degToRad(180))"	#calc "$ymin + 2 * $r * sin(degToRad(180))"		#calc "$zmin + $z2")		//55
+	(#calc "$xmin - $r - $x1"						#calc "$ymin + $r * sin(degToRad(180))"			#calc "$zmin + $z2")		//56
+
+	//BLOCK18
+	//52
+	//4
+	//3
+	(#calc "$xmin  - $r - $x1"						#calc "$ymin + 2 * $r * sin(degToRad(135))"		$zmin)						//57
+	//56
+	//55
+	//45
+	(#calc "$xmin  - $r - $x1"						#calc "$ymin + 2 * $r * sin(degToRad(135))"		#calc "$zmin + $z2")		//58
+
+	//BLOCK19
+	(#calc "$xmin + $r * cos(degToRad(270))"		#calc "$ymin - $r - $y"							$zmin)						//59
+	(#calc "$xmin + 2 * $r * cos(degToRad(315))"	#calc "$ymin - $r - $y"							$zmin)						//60
+	//7
+	//6
+	(#calc "$xmin + $r * cos(degToRad(270))"		#calc "$ymin - $r - $y"							#calc "$zmin + $z2")		//61
+	(#calc "$xmin + 2 * $r * cos(degToRad(315))"	#calc "$ymin - $r - $y"							#calc "$zmin + $z2")		//62
+	//41
+	(#calc "$xmin + 2 * $r * cos(degToRad(270))"	#calc "$ymin + 2 * $r * sin(degToRad(270))"		#calc "$zmin + $z2")		//63
+
+	//BLOCK20
+	(#calc "$xmin + 2 * $r * cos(degToRad(225))"	#calc "$ymin - $r - $y"							$zmin)						//64
+	//59
+	//6
+	//5
+	(#calc "$xmin + 2 * $r * cos(degToRad(225))"	#calc "$ymin - $r - $y"							#calc "$zmin + $z2")		//65
+	//61
+	//64
+	//54
+
+	//BLOCK21
+	//1
+	//35
+	(#calc "$xmin + $r + $x2"						#calc "$ymin + $r + $y"							$zmin)						//66
+	//44
+	//39
+	//38
+	(#calc "$xmin + $r + $x2"						#calc "$ymin + $r + $y"							#calc "$zmin + $z2")		//67
+	//50
+
+	//BLOCK22
+	//57
+	//3
+	//44
+	(#calc "$xmin  - $r - $x1"						#calc "$ymin + $r + $y"							$zmin)						//68
+	//58
+	//45
+	//48
+	(#calc "$xmin  - $r - $x1"						#calc "$ymin + $r + $y"							#calc "$zmin + $z2")		//69
+
+	//BLOCK23
+	(#calc "$xmin  - $r - $x1"						#calc "$ymin - $r - $y"							$zmin)						//70
+	//65
+	//5
+	//51
+	(#calc "$xmin  - $r - $x1"						#calc "$ymin - $r - $y"							#calc "$zmin + $z2")		//71
+	//66
+	//54
+	//53
+
+	//BLOCK24
+	//60
+	(#calc "$xmin + $r + $x2"						#calc "$ymin - $r - $y"							$zmin)						//72
+	//40
+	//7
+	//62
+	(#calc "$xmin + $r + $x2"						#calc "$ymin - $r - $y"							#calc "$zmin + $z2")		//73
+	//42
+	//41
+
+	//BLOCK25-36
+	//internal vertices
+	(#calc "$xmin + 2 * $ri * cos(degToRad(0))"		#calc "$ymin + 2 * $ri * sin(degToRad(0))"		#calc "$zmin + $z2")		//74
+	(#calc "$xmin + 2 * $ri * cos(degToRad(45))"	#calc "$ymin + 2 * $ri * sin(degToRad(45))"		#calc "$zmin + $z2")		//75
+	(#calc "$xmin + 2 * $ri * cos(degToRad(90))"	#calc "$ymin + 2 * $ri * sin(degToRad(90))"		#calc "$zmin + $z2")		//76
+	(#calc "$xmin + 2 * $ri * cos(degToRad(135))"	#calc "$ymin + 2 * $ri * sin(degToRad(135))"	#calc "$zmin + $z2")		//77
+	(#calc "$xmin + 2 * $ri * cos(degToRad(180))"	#calc "$ymin + 2 * $ri * sin(degToRad(180))"	#calc "$zmin + $z2")		//78
+	(#calc "$xmin + 2 * $ri * cos(degToRad(225))"	#calc "$ymin + 2 * $ri * sin(degToRad(225))"	#calc "$zmin + $z2")		//79
+	(#calc "$xmin + 2 * $ri * cos(degToRad(270))"	#calc "$ymin + 2 * $ri * sin(degToRad(270))"	#calc "$zmin + $z2")		//80
+	(#calc "$xmin + 2 * $ri * cos(degToRad(315))"	#calc "$ymin + 2 * $ri * sin(degToRad(315))"	#calc "$zmin + $z2")		//81
+	//center line
+	($xmin											$ymin											#calc "$zmin + $z2")		//82
+);
+
+blocks
+(
+    hex (32 10 9 8 33 26 25 24)			($throatCells		$throatCells	$z1Cells)		simpleGrading (1		1		1)
+    hex (32 12 11 10 33 28 27 26)		($throatCells		$throatCells	$z1Cells)		simpleGrading (1		1		1)
+    hex (32 14 13 12 33 30 29 28)		($throatCells		$throatCells	$z1Cells)		simpleGrading (1		1		1)
+    hex (32 8 15 14 33 24 31 30)		($throatCells		$throatCells	$z1Cells)		simpleGrading (1		1		1)
+
+    hex (8 9 1 0 24 25 17 16)			($throatCells		$ogridCells		$z1Cells)		simpleGrading (1		1		1)
+    hex (9 10 2 1 25 26 18 17)			($throatCells		$ogridCells		$z1Cells)		simpleGrading (1		1		1)
+    hex (10 11 3 2 26 27 19 18)			($throatCells		$ogridCells		$z1Cells)		simpleGrading (1		1		1)
+    hex (11 12 4 3 27 28 20 19)			($throatCells		$ogridCells		$z1Cells)		simpleGrading (1		1		1)
+    hex (12 13 5 4 28 29 21 20)			($throatCells		$ogridCells		$z1Cells)		simpleGrading (1		1		1)
+    hex (13 14 6 5 29 30 22 21)			($throatCells		$ogridCells		$z1Cells)		simpleGrading (1		1		1)
+    hex (14 15 7 6 30 31 23 22)			($throatCells		$ogridCells		$z1Cells)		simpleGrading (1		1		1)
+    hex (15 8 0 7 31 24 16 23)			($throatCells		$ogridCells		$z1Cells)		simpleGrading (1		1		1)
+
+    hex (0 34 35 1 36 37 38 39)			($x2Cells			$throatCells	$z2Cells)		simpleGrading ($hRef	1		1)
+    hex (7 40 34 0 41 42 37 36)			($x2Cells			$throatCells	$z2Cells)		simpleGrading ($hRef	1		1)
+
+    hex (3 2 43 44 45 46 47 48)			($throatCells		$yCells			$z2Cells)		simpleGrading (1		$hRef	1)
+    hex (2 1 49 43 46 39 50 47)			($throatCells		$yCells			$z2Cells)		simpleGrading (1		$hRef	1)
+
+    hex (51 5 4 52 53 54 55 56)			($x1Cells			$throatCells	$z2Cells)		simpleGrading ($lRef	1		1)
+    hex (52 4 3 57 56 55 45 58)			($x1Cells			$throatCells	$z2Cells)		simpleGrading ($lRef	1		1)
+
+    hex (59 60 7 6 61 62 41 63)			($throatCells		$yCells			$z2Cells)		simpleGrading (1		$lRef	1)
+    hex (64 59 6 5 65 61 63 54)			($throatCells		$yCells			$z2Cells)		simpleGrading (1		$lRef	1)
+
+    hex (1 35 66 49 39 38 67 50)		($x2Cells			$yCells			$z2Cells)		simpleGrading ($hRef	$hRef	1)
+
+    hex (57 3 44 68 58 45 48 69)		($x1Cells			$yCells			$z2Cells)		simpleGrading ($lRef	$hRef	1)
+
+    hex (70 64 5 51 71 65 54 53)		($x1Cells			$yCells			$z2Cells)		simpleGrading ($lRef	$lRef	1)
+
+    hex (60 72 40 7 62 73 42 41)		($x2Cells			$yCells			$z2Cells)		simpleGrading ($hRef	$lRef	1)
+
+    hex (32 8 9 10 82 74 75 76)			($throatCells		$throatCells	$z2Cells)		simpleGrading (1		1		1)
+	hex (32 10 11 12 82 76 77 78)		($throatCells		$throatCells	$z2Cells)		simpleGrading (1		1		1)
+	hex (32 12 13 14 82 78 79 80)		($throatCells		$throatCells	$z2Cells)		simpleGrading (1		1		1)
+	hex (32 14 15 8 82 80 81 74)		($throatCells		$throatCells	$z2Cells)		simpleGrading (1		1		1)
+
+	hex (8 0 1 9 74 36 39 75)			($ogridCells		$throatCells	$z2Cells)		simpleGrading (1		1		1)
+	hex (9 1 2 10 75 39 46 76)			($ogridCells		$throatCells	$z2Cells)		simpleGrading (1		1		1)
+	hex (10 2 3 11 76 46 45 77)			($ogridCells		$throatCells	$z2Cells)		simpleGrading (1		1		1)
+	hex (11 3 4 12 77 45 55 78)			($ogridCells		$throatCells	$z2Cells)		simpleGrading (1		1		1)
+	hex (12 4 5 13 78 55 54 79)			($ogridCells		$throatCells	$z2Cells)		simpleGrading (1		1		1)
+	hex (13 5 6 14 79 54 63 80)			($ogridCells		$throatCells	$z2Cells)		simpleGrading (1		1		1)
+	hex (14 6 7 15 80 63 41 81)			($ogridCells		$throatCells	$z2Cells)		simpleGrading (1		1		1)
+	hex (15 7 0 8 81 41 36 74)			($ogridCells		$throatCells	$z2Cells)		simpleGrading (1		1		1)
+);
+
+edges
+(
+	//BLOCK1-12
+	//external arc
+	arc	0 1		(#calc "$xmin + $r * cos(degToRad(22.5))"				#calc "$ymin + $r * sin(degToRad(22.5))"				$zmin)
+	arc 1 2		(#calc "$xmin + $r * cos(degToRad(67.5))"				#calc "$ymin + $r * sin(degToRad(67.5))"				$zmin)
+	arc 2 3		(#calc "$xmin + $r * cos(degToRad(112.5))"				#calc "$ymin + $r * sin(degToRad(112.5))"				$zmin)
+	arc 3 4		(#calc "$xmin + $r * cos(degToRad(157.5))"				#calc "$ymin + $r * sin(degToRad(157.5))"				$zmin)
+	arc 4 5		(#calc "$xmin + $r * cos(degToRad(202.5))"				#calc "$ymin + $r * sin(degToRad(202.5))"				$zmin)
+	arc 5 6		(#calc "$xmin + $r * cos(degToRad(247.5))"				#calc "$ymin + $r * sin(degToRad(247.5))"				$zmin)
+	arc 6 7		(#calc "$xmin + $r * cos(degToRad(292.5))"				#calc "$ymin + $r * sin(degToRad(292.5))"				$zmin)
+	arc 7 0		(#calc "$xmin + $r * cos(degToRad(337.5))"				#calc "$ymin + $r * sin(degToRad(337.5))"				$zmin)
+	//external arc
+	arc	16 17	(#calc "$xmin + $r * cos(degToRad(22.5))"				#calc "$ymin + $r * sin(degToRad(22.5))"				#calc "$zmin - $z1")
+	arc 17 18	(#calc "$xmin + $r * cos(degToRad(67.5))"				#calc "$ymin + $r * sin(degToRad(67.5))"				#calc "$zmin - $z1")
+	arc 18 19	(#calc "$xmin + $r * cos(degToRad(112.5))"				#calc "$ymin + $r * sin(degToRad(112.5))"				#calc "$zmin - $z1")
+	arc 19 20	(#calc "$xmin + $r * cos(degToRad(157.5))"				#calc "$ymin + $r * sin(degToRad(157.5))"				#calc "$zmin - $z1")
+	arc 20 21	(#calc "$xmin + $r * cos(degToRad(202.5))"				#calc "$ymin + $r * sin(degToRad(202.5))"				#calc "$zmin - $z1")
+	arc 21 22	(#calc "$xmin + $r * cos(degToRad(247.5))"				#calc "$ymin + $r * sin(degToRad(247.5))"				#calc "$zmin - $z1")
+	arc 22 23	(#calc "$xmin + $r * cos(degToRad(292.5))"				#calc "$ymin + $r * sin(degToRad(292.5))"				#calc "$zmin - $z1")
+	arc 23 16	(#calc "$xmin + $r * cos(degToRad(337.5))"				#calc "$ymin + $r * sin(degToRad(337.5))"				#calc "$zmin - $z1")
+	//internal arc
+	arc	8 9		(#calc "$xmin + $riO * cos(degToRad(22.5))"				#calc "$ymin + $riO * sin(degToRad(22.5))"				$zmin)
+	arc 9 10	(#calc "$xmin + $riO * cos(degToRad(67.5))"				#calc "$ymin + $riO * sin(degToRad(67.5))"				$zmin)
+	arc 10 11	(#calc "$xmin + $riO * cos(degToRad(112.5))"			#calc "$ymin + $riO * sin(degToRad(112.5))"				$zmin)
+	arc 11 12	(#calc "$xmin + $riO * cos(degToRad(157.5))"			#calc "$ymin + $riO * sin(degToRad(157.5))"				$zmin)
+	arc 12 13	(#calc "$xmin + $riO * cos(degToRad(202.5))"			#calc "$ymin + $riO * sin(degToRad(202.5))"				$zmin)
+	arc 13 14	(#calc "$xmin + $riO * cos(degToRad(247.5))"			#calc "$ymin + $riO * sin(degToRad(247.5))"				$zmin)
+	arc 14 15	(#calc "$xmin + $riO * cos(degToRad(292.5))"			#calc "$ymin + $riO * sin(degToRad(292.5))"				$zmin)
+	arc 15 8	(#calc "$xmin + $riO * cos(degToRad(337.5))"			#calc "$ymin + $riO * sin(degToRad(337.5))"				$zmin)
+
+	//BLOCK13
+	arc	36 39	(#calc "$xmin + 2 * $r * cos(degToRad(22.5))"			#calc "$ymin + 2 * $r * sin(degToRad(22.5))"			#calc "$zmin + $z2")
+
+	//BLOCK14
+	arc 41 36	(#calc "$xmin + 2 * $r * cos(degToRad(337.5))"			#calc "$ymin + 2 * $r * sin(degToRad(337.5))"			#calc "$zmin + $z2")
+
+	//BLOCK15
+	arc 46 45	(#calc "$xmin + 2 * $r * cos(degToRad(112.5))"			#calc "$ymin + 2 * $r * sin(degToRad(112.5))"			#calc "$zmin + $z2")
+
+	//BLOCK16
+	arc 39 46	(#calc "$xmin + 2 * $r * cos(degToRad(67.5))"			#calc "$ymin + 2 * $r * sin(degToRad(67.5))"			#calc "$zmin + $z2")
+
+	//BLOCK17
+	arc 55 54	(#calc "$xmin + 2 * $r * cos(degToRad(202.5))"			#calc "$ymin + 2 * $r * sin(degToRad(202.5))"			#calc "$zmin + $z2")
+
+	//BLOCK18
+	arc 45 55	(#calc "$xmin + 2 * $r * cos(degToRad(157.5))"			#calc "$ymin + 2 * $r * sin(degToRad(157.5))"			#calc "$zmin + $z2")
+
+	//BLOCK19
+	arc 63 41	(#calc "$xmin + 2 * $r * cos(degToRad(292.5))"			#calc "$ymin + 2 * $r * sin(degToRad(292.5))"			#calc "$zmin + $z2")
+
+	//BLOCK20
+	arc 54 63	(#calc "$xmin + 2 * $r * cos(degToRad(247.5))"			#calc "$ymin + 2 * $r * sin(degToRad(247.5))"			#calc "$zmin + $z2")
+);
+
+boundary
+(
+
+    front
+    {
+		type wall;
+        faces
+        (
+			(66 49 50 67)
+			(49 43 47 50)
+			(43 44 48 47)
+			(44 68 69 48)
+        );
+    }
+
+    back
+    {
+		type wall;
+        faces
+        (
+			(70 64 65 71)
+			(64 59 61 65)
+			(59 60 62 61)
+			(60 72 73 62)
+        );
+    }
+
+    bottom
+    {
+		type wall;
+        faces
+        (
+			(0 1 35 34)
+			(1 49 66 35)
+			(2 43 49 1)
+			(3 44 43 2)
+			(57 68 44 3)
+			(52 57 3 4)
+			(51 52 4 5)
+			(70 51 5 64)
+			(64 5 6 59)
+			(59 6 7 60)
+			(60 7 40 72)
+			(7 0 34 40)
+        );
+    }
+
+    top
+    {
+		type wall;
+        faces
+        (
+			(36 39 38 37)
+			(39 50 67 38)
+			(46 47 50 39)
+			(45 48 47 46)
+			(58 69 48 45)
+			(56 58 45 55)
+			(53 56 55 54)
+			(71 53 54 65)
+			(65 54 63 61)
+			(61 63 41 62)
+			(62 41 42 73)
+			(41 36 37 42)
+			(82 74 75 76)
+			(82 76 77 78)
+			(82 78 79 80)
+			(82 80 81 74)
+			(74 36 39 75)
+			(75 39 46 76)
+			(76 46 45 77)
+			(77 45 55 78)
+			(78 55 54 79)
+			(79 54 63 80)
+			(80 63 41 81)
+			(81 41 36 74)
+        );
+    }
+
+    crossflow
+    {
+        type patch;
+        faces
+        (
+			(57 68 69 58)
+			(52 57 58 56)
+			(51 52 56 53)
+			(70 51 53 71)
+        );
+    }
+
+    jet
+    {
+        type patch;
+        faces
+        (
+			(33 26 25 24)
+			(33 28 27 26)
+			(33 30 29 28)
+			(33 24 31 30)
+			(24 25 17 16)
+			(25 26 18 17)
+			(26 27 19 18)
+			(27 28 20 19)
+			(28 29 21 20)
+			(29 30 22 21)
+			(30 31 23 22)
+			(31 24 16 23)
+        );
+    }
+
+    outlet
+    {
+        type patch;
+        faces
+        (
+			(35 66 67 38)
+			(34 35 38 37)
+			(40 34 37 42)
+			(72 40 42 73)
+        );
+    }
+
+    pipe
+    {
+        type wall;
+        faces
+        (
+			(1 0 16 17)
+			(2 1 17 18)
+			(3 2 18 19)
+			(4 3 19 20)
+			(5 4 20 21)
+			(6 5 21 22)
+			(7 6 22 23)
+			(0 7 23 16)
+        );
+    }
+
+    internal
+    {
+        type internal;
+        faces ();
+    }
+);
+
+// ************************************************************************* //

@@ -1,0 +1,237 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  10
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+bubble
+{
+	type			coded;
+	libs			("libutilityFunctionObjects.so");
+
+	writeControl    adjustableRunTime;
+	writeInterval	0.01;
+
+	codeInclude
+	#{
+		#include "sampledIsoSurface.H"
+		#include "OFstream.H"
+	#};
+
+	codeOptions
+	#{
+		-I$(LIB_SRC)/sampling/lnInclude \
+		-I$(LIB_SRC)/surfMesh/lnInclude
+	#};
+
+	codeLibs
+	#{
+		-lsampling \
+		-lsurfMesh
+	#};
+
+	codeData
+	#{
+		autoPtr<OFstream> outputFilePtr;
+	#};
+
+	codeRead
+	#{
+		mkDir("postProcessing");
+		outputFilePtr.reset(new OFstream("postProcessing/bubble.dat"));
+	#};
+
+	codeExecute
+	#{
+		// lookup fields and values
+		const volVectorField& U = mesh().lookupObject<volVectorField>("U");
+		const volScalarField& water = mesh().lookupObject<volScalarField>("alpha.water");
+		const scalar filter = 4.0;
+		const scalar cutoffValue = 1e-5;
+		dimensionedScalar D("D", dimLength, 0.5);
+		dimensionedScalar Um("Um", dimVelocity, 1.0);
+
+
+		// helper function
+		auto smoothField = [&](const volScalarField& field) -> volScalarField
+		{
+			const scalar sigma = filter * pow((Foam::sum(mesh().V()).value()) / mesh().nCells(), 1.0/3.0);
+			volScalarField result = field;
+
+			forAll(field, celli)
+			{
+				scalar sum = field[celli];
+				scalar weights = 1.0;
+				
+				const auto& neighbors = mesh().cellCells()[celli];
+				const auto& centers = mesh().cellCentres();
+				
+				forAll(neighbors, i)
+				{
+					const scalar d = mag(centers[celli] - centers[neighbors[i]]);
+					const scalar w = exp(-d * d / (2.0 * sigma * sigma));
+					sum += w * field[neighbors[i]];
+					weights += w;
+				}
+				
+				result[celli] = sum/weights;
+			}
+			return result;
+		};
+
+
+		// normalized alpha gradient magnitude field
+		if (!mesh().foundObject<volScalarField>("normalizedMagGradAlpha"))
+		{
+			autoPtr<volScalarField> normalizedMagGradAlphaPtr_
+			(
+				new volScalarField
+				(
+					IOobject
+					(
+						"normalizedMagGradAlpha",
+						mesh().time().timeName(),
+						mesh(),
+						IOobject::NO_READ,
+						IOobject::AUTO_WRITE
+					),
+					mesh(),
+					dimensionedScalar("normalizedMagGradAlpha", dimless, cutoffValue)
+				)
+			);
+			mesh().objectRegistry::store(normalizedMagGradAlphaPtr_);
+		}
+
+		// normalized uy field
+		if (!mesh().foundObject<volScalarField>("normalizedUy"))
+		{
+			autoPtr<volScalarField> normalizedUyPtr_
+			(
+				new volScalarField
+				(
+					IOobject
+					(
+						"normalizedUy",
+						mesh().time().timeName(),
+						mesh(),
+						IOobject::NO_READ,
+						IOobject::AUTO_WRITE
+					),
+					mesh(),
+					dimensionedScalar("normalizedUy", dimless, cutoffValue)
+				)
+			);
+			mesh().objectRegistry::store(normalizedUyPtr_);
+		}
+
+
+		// lookup normalized alpha gradient magnitude field
+		volScalarField& normalizedMagGradAlpha = 
+			const_cast<volScalarField&>
+			(
+				mesh().lookupObject<volScalarField>("normalizedMagGradAlpha")
+			);
+
+		// lookup normalized uy field
+		volScalarField& normalizedUy = 
+			const_cast<volScalarField&>
+			(
+				mesh().lookupObject<volScalarField>("normalizedUy")
+			);
+
+
+		// calculate normalized alpha gradient magnitude field
+		volScalarField dimlessMagGradAlpha = mag(fvc::grad(water)) * D;
+		normalizedMagGradAlpha = (smoothField(dimlessMagGradAlpha) + cutoffValue) / 
+			max(gMax(smoothField(dimlessMagGradAlpha).primitiveField()) + cutoffValue, cutoffValue);
+
+		// calculate normalized uy field
+		volScalarField dimlessUy = mag(U.component(vector::Y)) / Um;
+		normalizedUy = (smoothField(dimlessUy) + cutoffValue) / 
+			max(gMax(smoothField(dimlessUy).primitiveField()) + cutoffValue, cutoffValue);
+
+
+		// calculate air field
+		volScalarField air
+		(
+			IOobject
+			(
+				"air",
+				mesh().time().timeName(),
+				U.mesh(),
+				IOobject::NO_READ,
+				IOobject::NO_WRITE
+			),
+			(1-water)
+		);
+
+		// create isoSurfaceDict
+		dictionary isoSurfaceDict;
+		isoSurfaceDict.set("type", "isoSurface");
+		isoSurfaceDict.set("isoField", "alpha.water");
+		isoSurfaceDict.set("isoValue", 0.5);
+		isoSurfaceDict.set("interpolate", "yes");
+
+		// update isoSurface
+		sampledSurfaces::isoSurface isoSurface("isoSurface", mesh(), isoSurfaceDict);
+		isoSurface.update();
+
+		// isoSurface point list
+		List<pointField> points(Pstream::nProcs());
+
+		// transfers
+		points[Pstream::myProcNo()] = isoSurface.points();
+		Pstream::gatherList(points);
+
+		// combine lists
+		pointField isoSurfacePoints
+		(
+			ListListOps::combine<Field<point>>
+			(
+				points,
+				accessOp<Field<point>>()
+			)
+		);
+
+		// calculate diameters
+		dimensionedScalar dx = max(isoSurfacePoints.component(0)) - min(isoSurfacePoints.component(0));
+		dimensionedScalar dy = max(isoSurfacePoints.component(1)) - min(isoSurfacePoints.component(1));
+		dimensionedScalar dz = max(isoSurfacePoints.component(2)) - min(isoSurfacePoints.component(2));
+
+		// calculate bubble area
+		dimensionedScalar area = isoSurface.area();
+
+		// calculate bubble volume
+		dimensionedScalar volume = fvc::domainIntegrate(air);
+
+		// calculate sphericity
+		dimensionedScalar dVolume = pow((4.0 * volume) / (constant::mathematical::pi * 0.1), 1.0/2.0);
+		dimensionedScalar sphericity = constant::mathematical::pi * dVolume * 0.1 / area;
+
+		// calculate center of mass
+		dimensionedVector centerOfMass = fvc::domainIntegrate(air*mesh().C()) / volume;
+
+		// calculate rise velocity
+		dimensionedVector riseVelocity = fvc::domainIntegrate(air*U) / volume;
+
+		// log results to output file
+		if (Pstream::myProcNo() == 0)
+		{
+			outputFilePtr() << mesh().time().timeName() << \
+						" " << area.value() << \
+						" " << volume.value() << \
+						" " << dx.value() << \
+						" " << dy.value() << \
+						" " << dz.value() << \
+						" " << sphericity.value() << \
+						" " << centerOfMass[1].value() << \
+						" " << riseVelocity[1].value() << endl;
+		}
+	#};
+}
+
+// ************************************************************************* //

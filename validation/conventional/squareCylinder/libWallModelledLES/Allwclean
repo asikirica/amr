@@ -1,0 +1,10 @@
+#!/bin/sh
+cd "${0%/*}" || exit
+
+wclean
+
+rm -f foamVersionThisIsCompiledFor
+rm -f versionRules/foamVersion4wmles.H
+rm -f versionRules/foamVersion
+
+#------------------------------------------------------------------------------

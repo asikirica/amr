@@ -1,0 +1,7 @@
+<map id="Foam::refinementHistory4::topoChange" name="Foam::refinementHistory4::topoChange">
+<area shape="rect" id="Node000001" title=" " alt="" coords="244,49,417,89"/>
+<area shape="rect" id="Node000002" href="$classFoam_1_1fvMeshTopoChangers_1_1multiFieldRefiner2D.html#a85b5f4a19786dd04d0560dab43c8b679" title=" " alt="" coords="5,5,196,60"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="230,56,196,50,196,45,231,50"/>
+<area shape="rect" id="Node000003" href="$classFoam_1_1fvMeshTopoChangers_1_1refiner2D.html#abed3eed555cdd23306f8a836ee56a4df" title=" " alt="" coords="5,85,196,125"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="231,87,196,92,196,87,230,82"/>
+</map>

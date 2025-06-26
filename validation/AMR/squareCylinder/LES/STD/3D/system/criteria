@@ -1,0 +1,257 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  10
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+criteria
+{
+	type			coded;
+	libs			("libutilityFunctionObjects.so");
+
+	name			criteria;
+
+	writeControl	adjustableRunTime;
+	writeInterval	0.01;
+
+	codeInclude
+	#{
+		#include "sampledIsoSurface.H"
+	#};
+
+	codeOptions
+	#{
+		-I$(LIB_SRC)/sampling/lnInclude \
+		-I$(LIB_SRC)/surfMesh/lnInclude
+	#};
+
+	codeLibs
+	#{
+		-lsampling \
+		-lsurfMesh
+	#};
+
+	codeExecute
+	#{
+		// lookup fields and values
+		const volVectorField& U = mesh().lookupObject<volVectorField>("U");
+		const volScalarField& nu = mesh().lookupObject<volScalarField>("nu");
+		const volScalarField& nut = mesh().lookupObject<volScalarField>("nut");
+		const scalar isoValue = 1.0;
+		const scalar filter = 2.0;
+		const scalar cutoffValue = 1e-8;
+
+
+		// helper function
+		auto smoothField = [&](const volScalarField& field) -> volScalarField
+		{
+			const scalar sigma = filter * pow((Foam::sum(mesh().V()).value()) / mesh().nCells(), 1.0/3.0);
+			volScalarField result = field;
+
+			forAll(field, celli)
+			{
+				scalar sum = field[celli];
+				scalar weights = 1.0;
+				
+				const auto& neighbors = mesh().cellCells()[celli];
+				const auto& centers = mesh().cellCentres();
+				
+				forAll(neighbors, i)
+				{
+					const scalar d = mag(centers[celli] - centers[neighbors[i]]);
+					const scalar w = exp(-d * d / (2.0 * sigma * sigma));
+					sum += w * field[neighbors[i]];
+					weights += w;
+				}
+				
+				result[celli] = sum/weights;
+			}
+			return result;
+		};
+
+
+		// normalized vorticity field
+		if (!mesh().foundObject<volScalarField>("normalizedVorticity"))
+		{
+			autoPtr<volScalarField> normalizedVorticityPtr_
+			(
+				new volScalarField
+				(
+					IOobject
+					(
+						"normalizedVorticity",
+						mesh().time().timeName(),
+						mesh(),
+						IOobject::NO_READ,
+						IOobject::AUTO_WRITE
+					),
+					mesh(),
+					dimensionedScalar("normalizedVorticity", dimless, cutoffValue)
+				)
+			);
+			mesh().objectRegistry::store(normalizedVorticityPtr_);
+		}
+
+		// normalized filter field
+		if (!mesh().foundObject<volScalarField>("normalizedFilter"))
+		{
+			autoPtr<volScalarField> normalizedFilterPtr_
+			(
+				new volScalarField
+				(
+					IOobject
+					(
+						"normalizedFilter",
+						mesh().time().timeName(),
+						mesh(),
+						IOobject::NO_READ,
+						IOobject::AUTO_WRITE
+					),
+					mesh(),
+					dimensionedScalar("normalizedFilter", dimless, cutoffValue)
+				)
+			);
+			mesh().objectRegistry::store(normalizedFilterPtr_);
+		}
+
+		// normalized lambda2 field
+		if (!mesh().foundObject<volScalarField>("normalizedLambda2"))
+		{
+			autoPtr<volScalarField> normalizedLambda2Ptr_
+			(
+				new volScalarField
+				(
+					IOobject
+					(
+						"normalizedLambda2",
+						mesh().time().timeName(),
+						mesh(),
+						IOobject::NO_READ,
+						IOobject::AUTO_WRITE
+					),
+					mesh(),
+					dimensionedScalar("normalizedLambda2", dimless, -1.0)
+				)
+			);
+			mesh().objectRegistry::store(normalizedLambda2Ptr_);
+		}
+
+
+		// lookup normalized vorticity field
+		volScalarField& normalizedVorticity = 
+			const_cast<volScalarField&>
+			(
+				mesh().lookupObject<volScalarField>("normalizedVorticity")
+			);
+
+		// lookup normalized filter field
+		volScalarField& normalizedFilter = 
+			const_cast<volScalarField&>
+			(
+				mesh().lookupObject<volScalarField>("normalizedFilter")
+			);
+
+		// lookup normalized lambda2 field
+		volScalarField& normalizedLambda2 = 
+			const_cast<volScalarField&>
+			(
+				mesh().lookupObject<volScalarField>("normalizedLambda2")
+			);
+
+
+		// normalized vorticity field
+		volScalarField dimlessVorticity = mag(fvc::curl(U)) / dimensionedScalar("small", dimVelocity/dimLength, 1);
+		dimlessVorticity.max(cutoffValue);
+		volScalarField smoothedVorticity = smoothField(dimlessVorticity);
+		scalar maxVorticity = gMax(smoothedVorticity.primitiveField());
+		normalizedVorticity = smoothedVorticity / maxVorticity;
+
+
+		// local filter width
+		volScalarField delta
+		(
+			IOobject
+			(
+				"delta",
+				mesh().time().timeName(),
+				mesh(),
+				IOobject::NO_READ,
+				IOobject::NO_WRITE
+			),
+			mesh(),
+			dimensionedScalar("delta", dimLength, 0.0)
+		);
+		delta.primitiveFieldRef() = pow(mesh().V(), 1.0/3.0);
+		delta.max(cutoffValue);
+
+		// Taylor microscale
+		volScalarField epsilon = (nu + nut)*magSqr(symm(fvc::grad(U)));
+		epsilon.max(cutoffValue);
+		volScalarField uPrime = mag(U - fvc::average(U));
+		volScalarField uRMS = fvc::average(magSqr(uPrime));
+		uRMS.max(cutoffValue);
+		volScalarField sqrtArg = 15.0 * (nu + nut) * uRMS / epsilon;
+		sqrtArg.max(cutoffValue);
+		volScalarField lambda = sqrt(sqrtArg);
+		lambda.max(cutoffValue);
+
+		// normalized filter field
+		normalizedFilter = smoothField(delta / lambda);
+
+
+		// temporary tensor field
+		volTensorField gradU = fvc::grad(U);
+		volTensorField rawSSplusWW = ( (symm(gradU) & symm(gradU)) + (skew(gradU) & skew(gradU)) );
+
+		// symmetry hack
+		volSymmTensorField SSplusWW = symm(rawSSplusWW) / dimensionedScalar("small", pow(dimVelocity/dimLength, 2), 1);
+
+		// temporary smoothed lambda2 field
+		volScalarField lambda2
+		(
+			IOobject
+			(
+				"lambda2",
+				mesh().time().timeName(),
+				mesh(),
+				IOobject::NO_READ,
+				IOobject::NO_WRITE
+			),
+			 smoothField(-eigenValues(SSplusWW)().component(vector::Y))
+		);
+
+		// create isoSurfaceDict
+		dictionary isoSurfaceDict;
+		isoSurfaceDict.set("type", "isoSurface");
+		isoSurfaceDict.set("isoField", "lambda2");
+		isoSurfaceDict.set("isoValue", isoValue);
+		isoSurfaceDict.set("interpolate", "yes");
+
+		// update isoSurface
+		sampledSurfaces::isoSurface isoSurface("isoSurface", mesh(), isoSurfaceDict);
+		isoSurface.update();
+
+		// mark cells containing isosurface
+		const pointField& isoPts = isoSurface.points();
+		const faceList& isoFaces = isoSurface.faces();
+		forAll(isoFaces, facei)
+		{
+			const face& f = isoFaces[facei];
+			forAll(f, fp)
+			{
+				const point& p = isoPts[f[fp]];
+				label cellI = mesh().findCell(p);
+				if (cellI >= 0)
+				{
+					normalizedLambda2[cellI] = 1.0;
+				}
+			}
+		}
+	#};
+}
+
+// ************************************************************************* //

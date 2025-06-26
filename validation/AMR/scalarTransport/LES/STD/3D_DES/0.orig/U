@@ -1,0 +1,69 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  10
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    format      ascii;
+    class       volVectorField;
+    location    "0";
+    object      U;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [0 1 -1 0 0 0 0];
+
+internalField   uniform (9.08 0 0);
+
+boundaryField
+{
+    #includeEtc "caseDicts/setConstraintTypes"
+
+    crossflow
+    {
+        type				mapped;
+        value				uniform (9.08 0 0);
+        setAverage			true;
+        average				(9.08 0 0);
+        interpolationScheme	cell;
+    }
+    jet
+    {
+        type				mapped;
+        value				uniform (0 0 37.72);
+        setAverage			true;
+        average				(0 0 37.72);
+        interpolationScheme	cell;
+    }
+    outlet
+    {
+        type            inletOutlet;
+        inletValue      uniform (0 0 0);
+        value           $internalField;
+    }
+    front
+    {
+        type            noSlip;
+    }
+    back
+    {
+        type            noSlip;
+    }
+    bottom
+    {
+        type            noSlip;
+    }
+    top
+    {
+        type            noSlip;
+    }
+    pipe
+    {
+        type            noSlip;
+    }
+}
+
+// ************************************************************************* //

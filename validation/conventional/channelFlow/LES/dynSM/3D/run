@@ -1,0 +1,59 @@
+#!/bin/bash
+#SBATCH --job-name=validation
+#SBATCH --output=validation_log.out
+#SBATCH --time=192:00:00
+#SBATCH --nodes=5
+#SBATCH --ntasks-per-node=24
+#SBATCH --mem=50G
+#SBATCH --partition=computes_thin
+#SBATCH --exclusive
+
+# setup
+CPU=$SLURM_NTASKS
+SOLVER=pimpleFoam
+
+# prepare
+blockMesh > log.blockMesh 2>&1
+
+# generate initial velocity field
+perturbUChannel > log.perturbUChannel 2>&1
+
+# set time
+sed -i "s/endTime.*[0-9][0-9]*;/endTime 35.794;/g" system/controlDict
+
+# decompose
+sed -i "s/numberOfSubdomains.*[0-9][0-9]*;/numberOfSubdomains $CPU;/g" system/decomposeParDict
+decomposePar > log.decomposePar 2>&1
+
+# run
+mpirun -np $CPU $SOLVER -parallel > log.$SOLVER 2>&1
+
+# reconstruct
+reconstructPar -latestTime > log.reconstructPar 2>&1
+
+# delete
+rm -rf processor*
+rm -rf 35/uniform
+rm -rf 35/phi
+rm -rf 35/phi_0
+rm -rf 35/pMean
+rm -rf 35/pPrime2Mean
+rm -rf 35/U_0
+rm -rf 35/UMean
+rm -rf 35/UPrime2Mean
+
+# set time
+sed -i "s/endTime.*[0-9][0-9]*;/endTime 214.765;/g" system/controlDict
+
+# decompose
+sed -i "s/numberOfSubdomains.*[0-9][0-9]*;/numberOfSubdomains $CPU;/g" system/decomposeParDict
+decomposePar > log.decomposePar 2>&1
+
+# run
+mpirun -np $CPU $SOLVER -parallel > log.$SOLVER 2>&1
+
+# reconstruct
+reconstructPar -latestTime > log.reconstructPar 2>&1
+
+# postProcess
+postProcess -func "graphLayerAverage (funcName=layerAverage, patches=(bottom), axis=y, symmetric=yes, UMean, UPrime2Mean, pMean, pPrime2Mean)" -latestTime

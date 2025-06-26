@@ -1,0 +1,30 @@
+#!/bin/bash
+
+# grids
+cells=16
+
+
+# LES
+cd SM
+cp -rf 3D 3D_LES
+cd 3D_LES
+chmod +x clean
+chmod +x run
+sed -i "s/cells.*[0-9][0-9]*;/cells $cells;/g" system/blockMeshDict
+./clean
+sbatch run
+cd ..
+cd ..
+
+
+# LES
+cd dynSM
+cp -rf 3D 3D_LES
+cd 3D_LES
+chmod +x clean
+chmod +x run
+sed -i "s/cells.*[0-9][0-9]*;/cells $cells;/g" system/blockMeshDict
+./clean
+sbatch run
+cd ..
+cd ..

@@ -1,0 +1,22 @@
+#!/bin/bash
+
+current_path=$(pwd)
+
+# Backup original file only if it doesn't exist
+if [ ! -f "$FOAM_SRC/Pstream/mpi/UPstream.C.orig" ]; then
+    cp $FOAM_SRC/Pstream/mpi/UPstream.C $FOAM_SRC/Pstream/mpi/UPstream.C.orig
+else
+    echo "Backup file exists. Skipping."
+fi
+
+# Copy modfied file
+cp Pstream/mpi/UPstream.C $FOAM_SRC/Pstream/mpi/UPstream.C
+cp Pstream/mpi/UPstream.H $FOAM_SRC/Pstream/mpi/UPstream.H
+
+# Build UPstream
+cd $FOAM_SRC/Pstream/mpi
+wmake
+cd $current_path
+
+# Build libfvMeshDistributorsMPI
+wmake libso

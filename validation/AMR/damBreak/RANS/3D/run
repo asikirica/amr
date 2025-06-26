@@ -1,0 +1,24 @@
+#!/bin/bash
+#SBATCH --job-name=validation
+#SBATCH --output=validation_log.out
+#SBATCH --time=192:00:00
+#SBATCH --nodes=2
+#SBATCH --ntasks-per-node=24
+#SBATCH --mem=50G
+#SBATCH --partition=computes_thin
+#SBATCH --exclusive
+
+# setup
+CPU=$SLURM_NTASKS
+SOLVER=interFoam
+
+# prepare
+blockMesh > log.blockMesh 2>&1
+setFields > log.setFields 2>&1
+
+# decompose
+sed -i "s/numberOfSubdomains.*[0-9][0-9]*;/numberOfSubdomains $CPU;/g" system/decomposeParDict
+decomposePar > log.decomposePar 2>&1
+
+# run
+mpirun -np $CPU $SOLVER -parallel > log.$SOLVER 2>&1

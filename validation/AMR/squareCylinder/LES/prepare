@@ -1,0 +1,5 @@
+#!/bin/bash
+
+chmod +x */*/clean */*/run
+
+cp -rf ../../../conventional/squareCylinder/RANS/coarse3D STD/

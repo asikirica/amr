@@ -1,0 +1,65 @@
+#!/bin/bash
+
+# grids
+coarse=6
+coarseOgridCells=8
+coarseFirstCell=0.002
+#
+medium=9
+mediumOgridCells=10
+mediumFirstCell=0.002
+#
+fine=12
+fineOgridCells=12
+fineFirstCell=0.002
+
+
+# coarse
+cp -rf 3D coarse3D
+cd coarse3D
+chmod +x clean
+chmod +x run
+sed -i "s/cells.*[0-9][0-9]*;/cells $coarse;/g" system/blockMeshDict
+sed -i "s/ogridCells.*[0-9][0-9]*;/ogridCells $coarseOgridCells;/g" system/blockMeshDict
+sed -i "s/firstCell.*[0-9][0-9]*;/firstCell $coarseFirstCell;/g" system/blockMeshDict
+sed -i "s/kFunction/kqRWallFunction/g" 0.orig/k
+sed -i "s/kValue/\$internalField/g" 0.orig/k
+sed -i "s/nutFunction/nutUSpaldingWallFunction/g" 0.orig/nut
+sed -i "s/nutValue/\$internalField/g" 0.orig/nut
+./clean
+sbatch run
+cd ..
+
+
+# medium
+cp -rf 3D medium3D
+cd medium3D
+chmod +x clean
+chmod +x run
+sed -i "s/cells.*[0-9][0-9]*;/cells $medium;/g" system/blockMeshDict
+sed -i "s/ogridCells.*[0-9][0-9]*;/ogridCells $mediumOgridCells;/g" system/blockMeshDict
+sed -i "s/firstCell.*[0-9][0-9]*;/firstCell $mediumFirstCell;/g" system/blockMeshDict
+sed -i "s/kFunction/kqRWallFunction/g" 0.orig/k
+sed -i "s/kValue/\$internalField/g" 0.orig/k
+sed -i "s/nutFunction/nutUSpaldingWallFunction/g" 0.orig/nut
+sed -i "s/nutValue/\$internalField/g" 0.orig/nut
+./clean
+sbatch run
+cd ..
+
+
+# fine
+cp -rf 3D fine3D
+cd fine3D
+chmod +x clean
+chmod +x run
+sed -i "s/cells.*[0-9][0-9]*;/cells $fine;/g" system/blockMeshDict
+sed -i "s/ogridCells.*[0-9][0-9]*;/ogridCells $fineOgridCells;/g" system/blockMeshDict
+sed -i "s/firstCell.*[0-9][0-9]*;/firstCell $fineFirstCell;/g" system/blockMeshDict
+sed -i "s/kFunction/kqRWallFunction/g" 0.orig/k
+sed -i "s/kValue/\$internalField/g" 0.orig/k
+sed -i "s/nutFunction/nutUSpaldingWallFunction/g" 0.orig/nut
+sed -i "s/nutValue/\$internalField/g" 0.orig/nut
+./clean
+sbatch run
+cd ..

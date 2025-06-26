@@ -1,0 +1,12 @@
+<map id="Foam::refinementHistory4Constraint::add" name="Foam::refinementHistory4Constraint::add">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,35,179,75"/>
+<area shape="rect" id="Node000002" href="$classFoam_1_1refinementHistory4.html#a36dc562e4b88e438f48398c44874b51d" title=" " alt="" coords="241,5,415,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="179,41,227,35,228,40,179,47"/>
+<area shape="rect" id="Node000003" href="$classFoam_1_1refinementHistory4.html#a1cea1588a4ec11ca25e3298d400c2eb1" title=" " alt="" coords="227,70,429,95"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="179,62,213,66,213,72,179,68"/>
+<area shape="rect" id="Node000004" href="$classFoam_1_1refinementHistory4.html#a1e1622b373ed13946cab67446b177411" title=" " alt="" coords="477,63,651,103"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="430,80,464,80,464,85,430,85"/>
+<area shape="rect" id="Node000005" href="$classFoam_1_1refinementHistory4.html#a80ec8f8d7ee18a579540efbc0e3259dd" title=" " alt="" coords="699,63,872,103"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="651,80,685,80,685,85,651,85"/>
+<area shape="poly" id="edge5_Node000005_Node000005" title=" " alt="" coords="744,63,741,53,748,44,763,38,785,36,811,39,825,46,823,51,810,44,785,41,764,43,751,48,747,54,749,62"/>
+</map>

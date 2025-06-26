@@ -1,0 +1,108 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  10
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+two_component_sampling
+{
+	D				0.04;
+	y				#calc "4.0 * $D";
+
+	x0				#calc "5.0 * $D";
+	y0				#calc "0.5 * $y";
+	z0				0;
+	z1				#calc "14 * $D";
+
+	type			sets;
+	libs			("libsampling.so");
+
+	writeControl	runTime;
+	writeInterval	0.01;
+
+	setFormat		raw;
+	fields			(UMean UPrime2Mean);
+
+	interpolationScheme	cellPoint;
+
+	sets
+	(
+		p0				// xD=-0.5
+		{
+			type		lineUniform;
+			axis		z;
+			start		(#calc "-0.5 * $D + $x0"	$y0		$z0);
+			end			(#calc "-0.5 * $D + $x0"	$y0		$z1);
+			nPoints		1000;
+		}
+
+		p1				// xD=0.0
+		{
+			type		lineUniform;
+			axis		z;
+			start		(#calc "0.0 * $D + $x0"		$y0		$z0);
+			end			(#calc "0.0 * $D + $x0"		$y0		$z1);
+			nPoints		1000;
+		}
+
+		p2				// xD=0.5
+		{
+			type		lineUniform;
+			axis		z;
+			start		(#calc "0.5 * $D + $x0"		$y0		$z0);
+			end			(#calc "0.5 * $D + $x0"		$y0		$z1);
+			nPoints		1000;
+		}
+
+		p3				// xD=1.0
+		{
+			type		lineUniform;
+			axis		z;
+			start		(#calc "1.0 * $D + $x0"		$y0		$z0);
+			end			(#calc "1.0 * $D + $x0"		$y0		$z1);
+			nPoints		1000;
+		}
+
+		p4				// xD=1.5
+		{
+			type		lineUniform;
+			axis		z;
+			start		(#calc "1.5 * $D + $x0"		$y0		$z0);
+			end			(#calc "1.5 * $D + $x0"		$y0		$z1);
+			nPoints		1000;
+		}
+
+		p5				// xD=2.0
+		{
+			type		lineUniform;
+			axis		z;
+			start		(#calc "2.0 * $D + $x0"		$y0		$z0);
+			end			(#calc "2.0 * $D + $x0"		$y0		$z1);
+			nPoints		1000;
+		}
+
+		p6				// xD=3.0
+		{
+			type		lineUniform;
+			axis		z;
+			start		(#calc "3.0 * $D + $x0"		$y0		$z0);
+			end			(#calc "3.0 * $D + $x0"		$y0		$z1);
+			nPoints		1000;
+		}
+
+		p7				// xD=4.0
+		{
+			type		lineUniform;
+			axis		z;
+			start		(#calc "4.0 * $D + $x0"		$y0		$z0);
+			end			(#calc "4.0 * $D + $x0"		$y0		$z1);
+			nPoints		1000;
+		}
+	);
+}
+
+// ************************************************************************* //

@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# clean
+rm -rf 0
+rm -rf constant/polyMesh
+rm -rf dynamicCode
+rm -rf postProcessing
+rm -rf processor*
+rm log*
+rm *.out
+foamListTimes -rm
+
+cp -rf 0.orig 0

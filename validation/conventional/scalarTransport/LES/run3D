@@ -1,0 +1,46 @@
+#!/bin/bash
+
+# grids
+cells=8
+ogridCells=4
+hRef=4.0
+lRef=0.25
+zRef=4.0
+
+
+# LES
+cd STD
+cp -rf 3D 3D_LES
+cd 3D_LES
+chmod +x clean
+chmod +x run
+sed -i "s/cells.*[0-9][0-9]*;/cells $cells;/g" system/blockMeshDict
+sed -i "s/ogridCells.*[0-9][0-9]*;/ogridCells $ogridCells;/g" system/blockMeshDict
+sed -i "s/hRef.*[0-9][0-9]*;/hRef $hRef;/g" system/blockMeshDict
+sed -i "s/lRef.*[0-9][0-9]*;/lRef $lRef;/g" system/blockMeshDict
+sed -i "s/zRef.*[0-9][0-9]*;/zRef $zRef;/g" system/blockMeshDict
+sed -i "s/nutFunction/nutLowReWallFunction/g" 0.orig/nut
+sed -i "s/nutValue/\$internalField/g" 0.orig/nut
+./clean
+sbatch run
+cd ..
+cd ..
+
+
+# LES
+cd WMLES
+cp -rf 3D 3D_LES
+cd 3D_LES
+chmod +x clean
+chmod +x run
+sed -i "s/cells.*[0-9][0-9]*;/cells $cells;/g" system/blockMeshDict
+sed -i "s/ogridCells.*[0-9][0-9]*;/ogridCells $ogridCells;/g" system/blockMeshDict
+sed -i "s/hRef.*[0-9][0-9]*;/hRef $hRef;/g" system/blockMeshDict
+sed -i "s/lRef.*[0-9][0-9]*;/lRef $lRef;/g" system/blockMeshDict
+sed -i "s/zRef.*[0-9][0-9]*;/zRef $zRef;/g" system/blockMeshDict
+sed -i "s/nutFunction/nutLowReWallFunction/g" 0.orig/nut
+sed -i "s/nutValue/\$internalField/g" 0.orig/nut
+./clean
+sbatch run
+cd ..
+cd ..

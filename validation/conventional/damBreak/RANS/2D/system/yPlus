@@ -1,0 +1,22 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  10
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+yPlus
+{
+	type            yPlus;
+	libs            ("libutilityFunctionObjects.so");
+
+	writeControl    runTime;
+	writeInterval   0.01;
+
+	patches			(walls bottom object);
+}
+
+// ************************************************************************* //

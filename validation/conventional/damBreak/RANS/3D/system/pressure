@@ -1,0 +1,38 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  10
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+pressure
+{
+	back			0.474;
+	top				0.526;
+
+	type            probes;
+	libs            ("libsampling.so");
+
+	writeControl    runTime;
+	writeInterval   0.01;
+
+	fields          (p);
+	fixedLocations	true;
+
+	probeLocations
+	(
+		(0.825	$back	0.021) // P1
+		(0.825	$back	0.061) // P2
+		(0.825	$back	0.100) // P3
+		(0.825	$back	0.140) // P4
+		(0.804	$top	0.161) // P5
+		(0.764	$top	0.161) // P6
+		(0.725	$top	0.161) // P7
+		(0.685	$top	0.161) // P8
+	);
+}
+
+// ************************************************************************* //
